@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'sf_pro_displaybold';
+    src: url('https://ik.imagekit.io/026k2i7ys/fonts/fontsfree-net-sfprodisplay-bold-webfont.woff2?updatedAt=1690380052015') format('woff2'),
+        url('https://ik.imagekit.io/026k2i7ys/fonts/fontsfree-net-sfprodisplay-semibold-webfont.woff?updatedAt=1690380036159') format('woff');
+    }
+    
+    @font-face {
+    font-family: 'sf_pro_displaymedium';
+    src: url('https://ik.imagekit.io/026k2i7ys/fonts/fontsfree-net-sfprodisplay-medium-1-webfont.woff2?updatedAt=1690380044219') format('woff2'),
+       url('https://ik.imagekit.io/026k2i7ys/fonts/fontsfree-net-sfprodisplay-medium-1-webfont.woff?updatedAt=1690380040508') format('woff');
+    }
+    
+    @font-face {
+    font-family: 'sf_pro_displaysemibold';
+    src: url('https://ik.imagekit.io/026k2i7ys/fonts/fontsfree-net-sfprodisplay-semibold-webfont.woff?updatedAt=1690380036159') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'sf_pro_-_stencilregular';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_stencil-webfont.woff2?updatedAt=1690380055979') format('woff2'),
+           url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_stencil-webfont.woff?updatedAt=1690380093514') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'sf_pro_-_railsregular';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff2?updatedAt=1690380080861') format('woff2'),
+           url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff?updatedAt=1690380085836') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'new_york_extra_largesemibold';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/new_york_-_semibold-webfont.woff2?updatedAt=1690380060193') format('woff2'),
+           url('https://ik.imagekit.io/026k2i7ys/fonts/new_york_-_semibold-webfont.woff?updatedAt=1690380063863') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'new_york_extra_largeheavy';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/new_york_-_heavy-webfont.woff2?updatedAt=1690380076386') format('woff2'),
+           url('https://ik.imagekit.io/026k2i7ys/fonts/new_york_-_heavy-webfont.woff?updatedAt=1690380072278') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'SFRounded-Semibold';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/SFRounded-Semibold.woff2?updatedAt=1690380030149') format('woff2'), 
+           url('https://ik.imagekit.io/026k2i7ys/fonts/SFRounded-Semibold.woff?updatedAt=1690380026084') format('woff');
+    }
+    
+    @font-face {
+      font-family: 'SF-Pro Rails';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff2?updatedAt=1690380080861') format('woff2'),
+           url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff?updatedAt=1690380085836') format('woff');
+    }
