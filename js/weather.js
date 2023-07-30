@@ -45,17 +45,19 @@ expandButton.addEventListener('click', function() {
   addCollapseButton();
 });
 
-  function addCollapseButton() {
-    var collapseButton = document.createElement('button');
-    collapseButton.textContent = '<';
-    collapseButton.classList.add('collapse-button'); // Add the collapse-button class
-    collapseButton.addEventListener('click', function() {
-      displayMinimalWeather();
-    });
-    weatherInfo.appendChild(collapseButton);
+function addCollapseButton() {
+  var collapseButton = document.createElement('button');
+  collapseButton.textContent = '<';
+  collapseButton.classList.add('collapse-button'); // Add the collapse-button class
+  collapseButton.addEventListener('click', function() {
+    displayMinimalWeather();
+  });
+  if (weatherInfo.contains(expandButton)) {
     weatherInfo.removeChild(expandButton);
   }
-  
+
+  weatherInfo.appendChild(collapseButton);
+}
   function displayMinimalWeather() {
     weatherInfo.innerHTML = `
       <div class="mini-weather">
