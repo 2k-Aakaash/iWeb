@@ -80,3 +80,45 @@ function loadBookmarks() {
 document.addEventListener('DOMContentLoaded', function() {
   loadBookmarks();
 });
+
+function closeLinksBox() {
+  // Code to close the links box
+  const linksBox = document.getElementById("box");
+  linksBox.style.display = "none";
+}
+
+function closeCustomizationBox() {
+  // Code to close the customization box
+  const customizationBox = document.getElementById("font-box-container");
+  customizationBox.classList.add("hidden");
+}
+
+function closeNotesBox() {
+  // Code to close the notes box
+  const notesBox = document.getElementById("note-modal");
+  notesBox.style.display = "none";
+}
+
+document.addEventListener("click", function(event) {
+  // Check if the click target is inside the links box or its button
+  const linksBox = document.getElementById("box");
+  const linksButton = document.querySelector(".link-button");
+  if (linksBox && !linksBox.contains(event.target) && !linksButton.contains(event.target)) {
+    closeLinksBox();
+  }
+
+  // Check if the click target is inside the customization box or its button
+  const customizationBox = document.getElementById("font-box-container");
+  const customizationButton = document.getElementById("customization-button");
+  if (customizationBox && !customizationBox.contains(event.target) && !customizationButton.contains(event.target)) {
+    closeCustomizationBox();
+  }
+
+  // Check if the click target is inside the notes box or its button
+  const notesBox = document.getElementById("note-modal");
+  const notesButton = document.getElementById("add-note-btn");
+  if (notesBox && !notesBox.contains(event.target) && !notesButton.contains(event.target)) {
+    closeNotesBox();
+  }
+});
+
