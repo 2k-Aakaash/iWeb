@@ -10,6 +10,21 @@ body {
   padding: 0;
   text-align: center;
   font-family: 'sf_pro_displaysemibold';
+  opacity: 0;
+}
+
+body.loaded {
+  animation: fadeIn 1s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .fade-transition {
@@ -25,8 +40,9 @@ body {
   height: 30px;
   width: 70px;
   font-size: 15px;
-  margin-left: 10px;
-  margin-top: 10px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
   font-family: 'SFRounded-Semibold';
   color: #ffffff;
   transition: transform 0.1s ease-in;
@@ -83,6 +99,7 @@ body {
 }
 
 .links-container .box {
+  display: none;
   top: 30px;
 }
 
@@ -363,7 +380,7 @@ body {
 }
 
 .modal-content {
-  margin: 15% auto;
+  margin: 18% auto;
   max-width: 500px;
   position: relative;
   background-color: rgba(255, 255, 255, 0.8);
@@ -554,8 +571,9 @@ textarea:focus{
   font-weight: 500;
   color:#ffffff;
   font-family: 'SFRounded-Semibold';
-  margin-left: 5px;
-  margin-top:0;
+  position: fixed;
+  top: 10px;
+  left: 90px;
   transition: transform 0.1s ease-in;
 }
 
@@ -907,3 +925,12 @@ button:focus{
   visibility: visible;
   opacity: 1;
 }
+
+.copyright-section{
+  position: fixed;
+  bottom: 0;
+  font-size: 10px;
+  color: #ffffff2f;
+}
+
+
