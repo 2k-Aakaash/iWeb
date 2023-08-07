@@ -121,8 +121,3 @@ document.addEventListener("click", function(event) {
     closeNotesBox();
   }
 });
-
-window.onload = function() {
-  // After the page has fully loaded, add the "loaded" class to the body
-  document.body.classList.add('loaded');
-};
