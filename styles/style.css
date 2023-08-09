@@ -448,8 +448,6 @@ body {
   .confirmation-dialog {
   max-width: 500px;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 15px;
   z-index: 9999;
@@ -459,8 +457,6 @@ body {
   -webkit-backdrop-filter: blur(7px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  max-width: 500px;
-  z-index: 2;
   text-align: center;
   margin-top: 10px;
   position: absolute;
@@ -478,7 +474,7 @@ body {
   margin-right: 10px;
   margin-bottom: 10px;
   font-weight: 500;
-  color: #ffffff;
+  color: #fff;
   font-family: 'SFRounded-Semibold';
   }
   
@@ -919,4 +915,58 @@ body {
   bottom: 0;
   font-size: 10px;
   color: #ffffff2f;
+  font-family: 'sf_pro_displaysemibold';
+}
+
+#delete-links-button{
+  background: rgba( 255, 255, 255, 0.2 );
+  backdrop-filter: blur( 7px );
+  -webkit-backdrop-filter: blur( 7px );
+  border-radius: 10px;
+  border:none;
+  height: 30px;
+  width: 100%;
+  font-size: 15px;
+  left: 0;
+  margin: 0;
+  font-family: 'SFRounded-Semibold';
+  color: #ffffff;
+  transition: transform 0.1s ease-in;
+}
+
+#delete-links-button:hover{
+  transform: scale(0.96);
+}
+
+#delete-links-button:focus{
+  transform: scale(0.90);
+}
+
+#confirm-delete-button{
+  background: rgba( 255, 255, 255, 0.2 );
+  backdrop-filter: blur( 7px );
+  -webkit-backdrop-filter: blur( 7px );
+  border-radius: 10px;
+  border:none;
+  height: 30px;
+  width: 100%;
+  font-size: 15px;
+  left: 0;
+  margin: 0;
+  margin-top: 5px;
+  font-family: 'SFRounded-Semibold';
+  color: #ffffff;
+  transition: transform 0.1s ease-in;
+}
+
+#confirm-delete-button:hover{
+  transform: scale(0.96);
+}
+
+#confirm-delete-button:focus{
+  transform: scale(0.90);
+}
+
+.delete-button{
+  color: rgb(179, 22, 22);
 }
