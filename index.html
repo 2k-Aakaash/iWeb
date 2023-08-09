@@ -44,11 +44,14 @@
   <div class="bookmark-input-container">
     <input type="text" id="bookmark-input" class="link-input" placeholder="Enter URL">
     <button onclick="addBookmark()" class="add-bookmark">+</button>
+
   </div>
   
   <div class="links-text-container">
     <div id="context-menu" class="context-menu"></div>
   </div>
+  <button id="delete-links-button" onclick="toggleDeleteMode()">Delete Links</button>
+  <button id="confirm-delete-button" class="delete-button" style="display: none;" onclick="confirmDelete()">Confirm Delete</button>
 </div>
 </div>
 
@@ -85,10 +88,10 @@
 </div>
 </div>
 
-  <div class="copyright-section">
+<div class="copyright-section">
   <p>&copy; 2023 2K Aakaash. All rights reserved.</p>
 </div>
-  
+
 <button id="add-note-btn">Notes</button>
 <div id="note-modal" class="modal">
 <div class="modal-content">
