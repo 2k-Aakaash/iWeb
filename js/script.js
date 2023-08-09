@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
   loadBookmarks();
 });
 
-// Link Element to Add Bookmarks on the Page
 function addBookmark() {
   var bookmarkInput = document.getElementById('bookmark-input').value;
   var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -17,7 +16,6 @@ function addBookmark() {
   newBookmark.textContent = websiteName;
   newBookmark.target = '_blank';
 
-  //Loading of Favicon from Google User content
   var newFavicon = document.createElement('img');
   newFavicon.src = 'https://s2.googleusercontent.com/s2/favicons?domain=' + bookmarkInput;
   newFavicon.alt = 'Favicon';
@@ -39,7 +37,6 @@ function addBookmark() {
   document.getElementById('bookmark-input').value = '';
 }
 
-//Shorten the Website name
 function getWebsiteName(url) {
   var parser = new URL(url);
   var websiteName = parser.hostname;
@@ -77,47 +74,146 @@ function loadBookmarks() {
     linksTextContainer.appendChild(newBookmarkContainer);
   }
 }
-document.addEventListener('DOMContentLoaded', function() {
-  loadBookmarks();
-});
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   loadBookmarks();
+// });
 
 function closeLinksBox() {
-  // Code to close the links box
   const linksBox = document.getElementById("box");
   linksBox.style.display = "none";
 }
 
 function closeCustomizationBox() {
-  // Code to close the customization box
   const customizationBox = document.getElementById("font-box-container");
   customizationBox.classList.add("hidden");
 }
 
-function closeNotesBox() {
-  // Code to close the notes box
-  const notesBox = document.getElementById("note-modal");
-  notesBox.style.display = "none";
-}
 
 document.addEventListener("click", function(event) {
-  // Check if the click target is inside the links box or its button
   const linksBox = document.getElementById("box");
   const linksButton = document.querySelector(".link-button");
   if (linksBox && !linksBox.contains(event.target) && !linksButton.contains(event.target)) {
     closeLinksBox();
   }
 
-  // Check if the click target is inside the customization box or its button
   const customizationBox = document.getElementById("font-box-container");
   const customizationButton = document.getElementById("customization-button");
   if (customizationBox && !customizationBox.contains(event.target) && !customizationButton.contains(event.target)) {
     closeCustomizationBox();
   }
 
-  // Check if the click target is inside the notes box or its button
   const notesBox = document.getElementById("note-modal");
   const notesButton = document.getElementById("add-note-btn");
   if (notesBox && !notesBox.contains(event.target) && !notesButton.contains(event.target)) {
     closeNotesBox();
   }
 });
+
+
+function closeNotesBox() {
+  const notesBox = document.getElementById("note-modal");
+  notesBox.style.display = "none";
+}
+
+let deleteMode = false;
+
+function toggleDeleteMode() {
+  deleteMode = !deleteMode;
+  const bookmarks = document.querySelectorAll('.bookmark-container');
+
+  for (const bookmark of bookmarks) {
+    let checkbox = bookmark.querySelector('input[type="checkbox"]');
+    
+    if (deleteMode && !checkbox) {
+      checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      // console.log(bookmarks)
+      checkbox.setAttribute("id",bookmark?.outerText)
+
+      bookmark.insertBefore(checkbox, bookmark.firstChild);
+    } else if (!deleteMode && checkbox) {
+      checkbox.remove();
+    }
+    bookmark.classList.toggle('delete-mode', deleteMode);
+  }
+
+  const confirmDeleteButton = document.getElementById('confirm-delete-button');
+  confirmDeleteButton.style.display = deleteMode ? 'block' : 'none';
+}
+
+
+function confirmDelete() {
+  const checkboxes = document.querySelectorAll('.bookmark-container input[type="checkbox"]');
+  const selectedBookmarks = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+
+  if (selectedBookmarks.length === 0) {
+    alert('No bookmarks selected.');
+    return;
+  }
+
+  const isSingular = selectedBookmarks.length === 1;
+  const confirmationMessage = isSingular
+    ? 'Are you sure you want to delete the selected link? This action cannot be undone.'
+    : 'Are you sure you want to delete the selected links? This action cannot be undone.';
+
+  const confirmationDialog = createConfirmationDialog(confirmationMessage, () => {
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+    // const updatedBookmarks = bookmarks.filter(bookmark =>{
+    //   !selectedBookmarks.some(checkbox => checkbox.closest('.bookmark-container').querySelector('a').href === bookmark.url)
+    // });
+
+    let ids = selectedBookmarks.map((book) => book.id)
+  
+    const updatedData = bookmarks.filter(data=>{
+      if(!ids.includes(data?.websiteName)){
+        return data
+      }  
+    }) 
+
+    localStorage.setItem('bookmarks', JSON.stringify(updatedData));
+    
+    selectedBookmarks.forEach(checkbox => {
+      const bookmarkContainer = checkbox.closest('.bookmark-container');
+      bookmarkContainer.remove();
+    });
+
+    toggleDeleteMode();
+    confirmationDialog.remove();
+  });
+  document.body.appendChild(confirmationDialog);
+}
+
+function createConfirmationDialog(message, onConfirm) {
+  const confirmationDialog = document.createElement('div');
+  confirmationDialog.className = 'confirmation-dialog';
+
+  const confirmationText = document.createElement('p');
+  confirmationText.textContent = message;
+  confirmationDialog.appendChild(confirmationText);
+
+  const confirmButton = document.createElement('button');
+  confirmButton.textContent = 'Delete';
+  confirmButton.addEventListener('click', onConfirm);
+  confirmationDialog.appendChild(confirmButton);
+
+  const cancelButton = document.createElement('button');
+  cancelButton.textContent = 'Cancel';
+  cancelButton.addEventListener('click', () => {
+    confirmationDialog.remove();
+  });
+  confirmationDialog.appendChild(cancelButton);
+
+  return confirmationDialog;
+}
+
+
+function removeBookmarkFromLocalStorage(checkbox) {
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  const websiteName = checkbox.nextElementSibling.textContent;
+  const updatedBookmarks = bookmarks.filter(bookmark => bookmark.websiteName !== websiteName);
+
+  localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
+}
+
+
