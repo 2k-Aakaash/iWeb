@@ -1,5 +1,5 @@
 #Custom Homepage🚀🌕
-![Custom Homepage Example](https://www.example.com/images/custom-homepage.gif](https://ik.imagekit.io/026k2i7ys/homepage.PNG?updatedAt=1691686107647)
+![Custom Homepage Example](https://ik.imagekit.io/026k2i7ys/homepage.PNG?updatedAt=1691686107647)
 
 Discover a sophisticated custom homepage on GitHub. Elevate your web presence with sleek designs, seamless navigation, and extensive customization options. Redefine Professionalism today!
 
