@@ -1,4 +1,7 @@
 #Custom Homepage🚀🌕
+
+![Total Views](https://img.shields.io/badge/dynamic/json?color=green&label=Total%20Views&query=value&url=https://api.github.com/repos/2k-Aakaash/custom-homepage/traffic/views)
+
 https://img.shields.io/github/downloads/2k-Aakaash/custom-homepage/total
 https://img.shields.io/github/watchers/2k-Aakaash/custom-homepage
 
