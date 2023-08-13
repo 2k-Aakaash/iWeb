@@ -1,4 +1,6 @@
 #Custom Homepage🚀🌕
+https://img.shields.io/github/downloads/2k-Aakaash/custom-homepage/total
+https://img.shields.io/github/watchers/2k-Aakaash/custom-homepage
 
 ![Custom Homepage Example](https://ik.imagekit.io/026k2i7ys/homepage.PNG?updatedAt=1691686107647)
 
