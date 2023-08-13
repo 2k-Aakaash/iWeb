@@ -43,17 +43,19 @@
 <button onclick="changeBackgroundManually()" class="change-bg">Change BG</button>
 
 <div id="box" class="box">
+
   <div class="bookmark-input-container">
     <input type="text" id="bookmark-input" class="link-input" placeholder="Enter URL">
     <button onclick="addBookmark()" class="add-bookmark">+</button>
-
   </div>
   
   <div class="links-text-container">
     <div id="context-menu" class="context-menu"></div>
   </div>
+  <button id="drag-n-drop-button" class="drag-n-drop-button">Drag 'n Drop</button>
   <button id="delete-links-button" onclick="toggleDeleteMode()">Delete Links</button>
   <button id="confirm-delete-button" class="delete-button" style="display: none;" onclick="confirmDelete()">Confirm Delete</button>
+
 </div>
 </div>
 
@@ -82,7 +84,6 @@
   <button id="bgButton" onclick="showFileInput()" class="bg-button">Custom BG</button> 
    <input type="file" id="fileInput" accept=".jpg, .jpeg, .png, .gif" style="display: none">
    <button id="custom-name-btn" class="custom-name-button">Custom Name</button>
-<!--    <button id="bg-button" class="bg-control-button">BG</button> -->
 
    <div class="input-container" id="input-container">
     <input type="text" id="name-input" placeholder="Enter your name">
@@ -91,34 +92,23 @@
 </div>
 </div>
 
-  <!-- Under Work --!>
-<!-- <div id="add-remove-bg-window" class="add-remove-bg-window" style="display: none;">
-  <div class="title-bar">
-    <div class="header-bg">
-      <h2 class="window-title">Add or Remove BG</h2>
-      <button id="remove-bg-button" class="remove-bg-button">Remove BG</button>
-      <button id="add-bg-button" class="add-bg-button">Add BG</button>
-      <button id="close-window-button" class="close-window-button">X</button>
-    </div>
-     <div class="image-grid"></div>
-  </div>
-</div> -->
-
 <div class="copyright-section">
   <p>&copy; 2023 2K Aakaash. All rights reserved.</p>
 </div>
 
+<div class="notes-box">
 <button id="add-note-btn">Notes</button>
 <div id="note-modal" class="modal">
 <div class="modal-content">
   <span class="close">&times;</span>
   <textarea id="note-textarea" placeholder="Type Something..."></textarea>
-  <div id="notes-container"></div>
+  <div id="notes-container" class="custom-scrollbar"></div>
   <div class="modal-buttons">
-    <button id="save-note-btn">Save Note</button>
+    <button id="save-note-btn" onclick="saveNote()">Save Note</button>
     <button id="delete-note-btn">Delete Note</button>
     <button id="edit-note-btn">Edit Note</button>
   </div>
+</div>
 </div>
 </div>
 
