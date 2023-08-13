@@ -11,6 +11,11 @@ body {
   font-family: 'sf_pro_displaysemibold';
   }
 
+  ::placeholder{
+    color: #fff;
+    opacity: 0.7;
+  }
+
   .link-button{
     background: rgba( 255, 255, 255, 0.2 );
     backdrop-filter: blur( 7px );
@@ -36,6 +41,52 @@ body {
     transform: scale(0.90);
   }
   
+  .drag-n-drop-button{
+    background: rgba( 255, 255, 255, 0.2 );
+    backdrop-filter: blur( 7px );
+    -webkit-backdrop-filter: blur( 7px );
+    border-radius: 10px;
+    border:none;
+    height: 30px;
+    width: 100%;
+    font-size: 15px;
+    left: 0;
+    margin: 0;
+    margin-bottom: 5px;
+    font-family: 'SFRounded-Semibold';
+    color: #ffffff;
+    transition: transform 0.1s ease-in;
+  }
+  
+  .drag-n-drop-button:hover{
+    transform: scale(0.96);
+  }
+  
+  .drag-n-drop-button:focus{
+    transform: scale(0.90);
+  }
+  
+
+  /* Add this to change cursor during drag */
+  .bookmark-container[draggable] {
+    cursor: grab;
+  }
+  /* Add this to style the dragged links container */
+  .drag-mode::before {
+    content: "═";
+    margin-right: 10px;
+  }
+
+  /* .equals-symbol {
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 18px;
+  }
+   */
+
   .box {
   display: none;
   position: absolute;
@@ -373,13 +424,9 @@ body {
   
   .modal-content {
   margin: 15% auto;
-  max-width: 500px;
+  width: 550px;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border-radius: 15px;
-  z-index: 9999;
+  padding: 10px; 
   background: rgba( 255, 255, 255, 0.2 );
   box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
   backdrop-filter: blur( 7px );
@@ -391,7 +438,28 @@ body {
   bottom: 0;
   right: 0;
   margin-bottom: 45px;
-  margin-right: 10px;
+  margin-right: 10px; 
+  z-index: 9999;
+  height: 300px;
+  overflow-y: auto; 
+  }
+
+  .modal-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+  }
+  
+  .modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .modal-content::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
   }
   
   .close {
@@ -427,7 +495,8 @@ body {
   }
   
   .modal-buttons {
-  text-align: right;
+  display: flex;
+  justify-content: center;
   }
   
   #notes-container {
@@ -436,9 +505,13 @@ body {
   }
   
   .note {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
   }
   
   .checkbox {
@@ -453,13 +526,14 @@ body {
   z-index: 9999;
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
-  backdrop-filter: blur(7px);
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(7px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   text-align: center;
   margin-top: 10px;
   position: absolute;
+  color: #fff;
   }
   
   .confirmation-dialog button {
@@ -474,10 +548,35 @@ body {
   margin-right: 10px;
   margin-bottom: 10px;
   font-weight: 500;
-  color: #fff;
   font-family: 'SFRounded-Semibold';
+  transition: transform 0.1s ease-in;
+  }
+
+  .delete-button{
+    color: rgb(179, 22, 22);
   }
   
+  .delete-button:hover{
+    transform: scale(1.1);
+    color: rgb(212, 28, 28);
+  }
+  
+  .delete-button:focus{
+    transform: scale(1.2);
+  }
+    
+  .cancel-button{
+    color: #fff;
+  }
+  
+  .cancel-button:hover{
+    transform: scale(0.96);
+  }
+
+  .cancel-button:focus{
+    transform: scale(0.90);
+  }
+    
   #add-note-btn{
   position: fixed;
   bottom: 10px;
@@ -903,6 +1002,12 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    color: #000000;
+  }
+
+  #name-input::placeholder{
+    color: #000;
+    opacity: 0.7;
   }
   
   .show-input {
@@ -966,148 +1071,3 @@ body {
 #confirm-delete-button:focus{
   transform: scale(0.90);
 }
-
-.delete-button{
-  color: rgb(179, 22, 22);
-}
-
-.title-bar{
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 15px;
-  z-index: 9999;
-  background: rgba( 255, 255, 255, 0.2 );
-  box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
-  backdrop-filter: blur( 7px );
-  -webkit-backdrop-filter: blur( 7px );
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
-  width: 900px;
-  height: 500px;
-  overflow-y: auto; 
-  max-height: 80vh; /* Adjust as needed */
-  position: relative;
-}
-
-.bg-control-button{
-  background: rgba( 255, 255, 255, 0.2 );
-  backdrop-filter: blur( 7px );
-  -webkit-backdrop-filter: blur( 7px );
-  border-radius: 10px;
-  border:none;
-  height: 30px;
-  width: 120px;
-  font-size: 15px;
-  font-family: 'SFRounded-Semibold';
-  color: #ffffff;
-  transition: transform 0.1s ease-in;
-  position: fixed;
-  left: 0;
-  margin-left: 10px;
-  top: 120px;
-}
-
-.bg-control-button:hover{
-  transform: scale(0.96);
-}
-
-.bg-control-button:focus{
-  transform: scale(0.90);
-}
-
-.remove-bg-button{
-  background: rgba( 255, 255, 255, 0.2 );
-  backdrop-filter: blur( 7px );
-  -webkit-backdrop-filter: blur( 7px );
-  border-radius: 10px;
-  border:none;
-  height: 30px;
-  width: 120px;
-  font-size: 15px;
-  font-family: 'SFRounded-Semibold';
-  color: #ffffff;
-  transition: transform 0.1s ease-in;
-}
-
-.remove-bg-button:hover{
-  transform: scale(0.96);
-}
-
-.remove-bg-button:focus{
-  transform: scale(0.90);
-}
-
-.add-bg-button{
-  background: rgba( 255, 255, 255, 0.2 );
-  backdrop-filter: blur( 7px );
-  -webkit-backdrop-filter: blur( 7px );
-  border-radius: 10px;
-  border:none;
-  height: 30px;
-  width: 120px;
-  font-size: 15px;
-  font-family: 'SFRounded-Semibold';
-  color: #ffffff;
-  transition: transform 0.1s ease-in;
-}
-
-.add-bg-button:hover{
-  transform: scale(0.96);
-}
-
-.add-bg-button:focus{
-  transform: scale(0.90);
-}
-
-.header-bg{
-  display: grid;
-  grid-template-columns: 550px 150px 150px 30px;
-  height: 70px;
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.336);
-}
-
-.window-title{
-  text-align: left;
-  margin-left: 20px;
-  color: #fff;
-}
-
-.close-window-button{
-  width: 30px;
-  height: 30px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0);
-  color: #fff;
-}
-
-.add-remove-bg-window{
-  display: flex;
-  justify-content: center;
-  margin: 0%;
-  position: absolute;
-}
-
-.image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 20px;
-    overflow-y: auto;
-    max-height: calc(80vh - 100px); /* Adjust as needed */
-  }
-
-  .image-container {
-    position: relative;
-  }
-
-  .bg-image {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .image-checkbox {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-  }
