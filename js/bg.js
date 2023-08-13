@@ -14,7 +14,7 @@ function extractAverageColor(imagePath) {
     var vibrant = new Vibrant(image);
     var swatches = vibrant.swatches();
     var dominantColor = swatches['Vibrant'] || swatches['Muted'] || swatches['DarkVibrant'] || swatches['DarkMuted'] || swatches['LightVibrant'] || swatches['LightMuted'];
-
+   
     if (dominantColor) {
       var textColor = dominantColor.getHex();
       var textElements = document.querySelectorAll("#clock");
@@ -35,7 +35,7 @@ function setBackgroundAndTextColor(imagePath) {
 
   newImageElement.style.opacity = 1;
 
-  localStorage.setItem('lastBackgroundImage', imagePath);
+  // localStorage.setItem('lastBackgroundImage', imagePath);
 
   setTimeout(function () {
     bodyElement.style.backgroundImage = "url('" + imagePath + "')";
@@ -58,23 +58,4 @@ function changeBackgroundManually() {
   currentIndex = (currentIndex + 1) % backgroundImages.length;
   setBackgroundAndTextColor(backgroundImages[currentIndex]);
 }
-
-function initializeBackground() {
-  // Retrieve the last applied image from local storage
-  var lastBackgroundImage = localStorage.getItem('lastBackgroundImage');
-
-  if (lastBackgroundImage) {
-    setBackgroundAndTextColor(lastBackgroundImage);
-  } else {
-    setBackgroundAndTextColor(backgroundImages[currentIndex]);
-  }
-}
-
-// Call the function to initialize the background image on page load
-initializeBackground();
-
-// Start the animation loop
-setTimeout(function () {
-  requestAnimationFrame(changeBackground);
-}, intervalDuration);
 
