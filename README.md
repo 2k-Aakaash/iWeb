@@ -8,10 +8,8 @@
 Discover a sophisticated custom homepage on GitHub. Elevate your web presence with sleek designs, seamless navigation, and extensive customization options. Redefine Professionalism today!
 
 Note:
-1. This Homepage has some Bugs. Fixed in Future and Release will be Arrived Shortly as versions.
-2. No Reproduction or Replication is allowed without permission of developer.
-3. Explore all across of the page to customize yourself.
-4. if you want the page in as homepage whenever your browser starts, add this github link to the browser's homepage action in settings or download this repository and use in offline.
-5. if you find some issues or any other problems you facing with this repository please leave a comment in issues section.
-6. Extra Tip:
-use GIF images to make the page cool!
+1. This homepage currently has some bugs, which will be addressed in future releases arriving shortly.
+2. Reproduction or replication is strictly prohibited without the developer's explicit permission.
+3. Explore the entire page for personal customization. To set this page as your browser's homepage, either add the GitHub link    to the homepage action in your browser settings or download this repository for offline use.
+4. Should you encounter any issues or other problems with this repository, kindly leave a comment in the issues section.
+5. Pro Tip: Enhance the page's aesthetics by incorporating GIF images!
