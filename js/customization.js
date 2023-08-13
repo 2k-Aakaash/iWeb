@@ -107,3 +107,26 @@ function showFileInput() {
           inputContainer.classList.remove('show-input');
       }
   });
+
+    // Function to apply the selected font to the clock
+function applyFontToClock(fontUrl) {
+  const clockElement = document.getElementById('clock');
+  clockElement.style.fontFamily = `url('${fontUrl}')`;
+}
+
+// Function to toggle the font container visibility
+function toggleFontBox() {
+  const fontBoxContainer = document.getElementById('font-box-container');
+  fontBoxContainer.classList.toggle('hidden');
+}
+
+// Event listener for the customization button
+document.getElementById('customization-button').addEventListener('click', toggleFontBox);
+
+// Event listener for selecting a font from the font container
+document.querySelectorAll('.font-option').forEach(fontOption => {
+  fontOption.addEventListener('click', () => {
+    const selectedFont = fontOption.getAttribute('data-font');
+    applyFontToClock(selectedFont);
+  });
+});

@@ -16,10 +16,31 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   notes.push(noteText);
   localStorage.setItem("notes", JSON.stringify(notes));
   displayNotes();
-  document.getElementById("note-modal").style.display = "none";
+  // document.getElementById("note-modal").style.display = "none";
   document.getElementById("note-textarea").value = "";
   }
   });
+
+  // Add an event listener to the note textarea to capture key presses
+document.getElementById('note-textarea').addEventListener('keydown', function (event) {
+  // Check if the Ctrl key is pressed along with the 'S' key
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault(); // Prevent the default browser save action
+    saveNote(); // Call the function to save the note
+  }
+});
+
+// Function to save the note
+function saveNote() {
+  var noteText = document.getElementById('note-textarea').value;
+  if (noteText.trim() !== '') {
+    var notes = JSON.parse(localStorage.getItem('notes') || '[]');
+    notes.push(noteText);
+    localStorage.setItem('notes', JSON.stringify(notes));
+    displayNotes();
+    document.getElementById('note-textarea').value = '';
+  }
+}
   
   // Delete the selected notes
   document.getElementById("delete-note-btn").addEventListener("click", function() {
@@ -34,6 +55,24 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   showConfirmationDialog(selectedNotes);
   }
   });
+
+  // Add an event listener to the document to capture key presses
+  document.addEventListener('keydown', function (event) {
+  // Check if the 'Delete' key is pressed
+  if (event.key === 'Delete') {
+    var checkboxes = document.getElementsByClassName('checkbox');
+    var selectedNotes = [];
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        selectedNotes.push(i);
+      }
+    }
+    if (selectedNotes.length > 0) {
+      showConfirmationDialog(selectedNotes); // Call the function to show the confirmation dialog
+    }
+  }
+});
+
   
   // Edit the selected note
   document.getElementById("edit-note-btn").addEventListener("click", function() {
@@ -53,7 +92,6 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
     notes.splice(selectedNoteIndex, 1);
     localStorage.setItem("notes", JSON.stringify(notes));
     displayNotes();
-    document.getElementById("note-modal").style.display = "none";
   }
   }
   });
@@ -92,6 +130,7 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   
   var deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
+  deleteButton.className = "delete-button"; // Add the class here
   deleteButton.addEventListener("click", function() {
   var notes = JSON.parse(localStorage.getItem("notes"));
   selectedNotes.sort(function(a, b) {
@@ -110,7 +149,8 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   confirmationDialog.appendChild(deleteButton);
   
   var cancelButton = document.createElement("button");
-  cancelButton.textContent = "No";
+  cancelButton.textContent = "Cancel";
+  cancelButton.className = 'cancel-button';
   cancelButton.addEventListener("click", function() {
   confirmationDialog.remove();
   });
@@ -132,25 +172,16 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   }
   }
 
-  // Function to apply the selected font to the clock
-function applyFontToClock(fontUrl) {
-  const clockElement = document.getElementById('clock');
-  clockElement.style.fontFamily = `url('${fontUrl}')`;
-}
-
-// Function to toggle the font container visibility
-function toggleFontBox() {
-  const fontBoxContainer = document.getElementById('font-box-container');
-  fontBoxContainer.classList.toggle('hidden');
-}
-
-// Event listener for the customization button
-document.getElementById('customization-button').addEventListener('click', toggleFontBox);
-
-// Event listener for selecting a font from the font container
-document.querySelectorAll('.font-option').forEach(fontOption => {
-  fontOption.addEventListener('click', () => {
-    const selectedFont = fontOption.getAttribute('data-font');
-    applyFontToClock(selectedFont);
-  });
+// Add an event listener to the document to capture key presses
+document.addEventListener('keydown', function (event) {
+  // Check if the 'Esc' key is pressed
+  if (event.key === 'Escape') {
+    closeNotesWindow(); // Call the function to close the notes window
+  }
 });
+
+// Function to close the notes window
+function closeNotesWindow() {
+  var notesModal = document.getElementById('note-modal');
+  notesModal.style.display = 'none';
+}
