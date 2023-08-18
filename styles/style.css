@@ -252,7 +252,7 @@ body {
     align-items: center;
     gap: 5px;
   }
-  
+
   #search-input {
   border: none;
   border: 1px solid rgba(255, 255, 255, 0.658);
@@ -283,7 +283,8 @@ body {
   }
   
   .search-container{
-  margin-top: 70px;
+    width: 300px;
+    margin: 0 auto;
   }
   
   .name-intro{
@@ -1071,4 +1072,3 @@ body {
 #confirm-delete-button:focus{
   transform: scale(0.90);
 }
-
