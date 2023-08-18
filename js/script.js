@@ -5,24 +5,36 @@ document.addEventListener('DOMContentLoaded', function() {
 function addBookmark() {
   var bookmarkInput = document.getElementById('bookmark-input').value.trim();
   
+  if (!bookmarkInput) {
+    alert('Please enter a valid URL.');
+    return; // Exit the function if no URL is entered
+  }
+
     // Check if the input starts with http://, https://, or www.
     if (!/^((ftp|http|https):\/\/|www\.)[^ "]+$/.test(bookmarkInput)) {
       // If no extension, add ".com" to the end
       bookmarkInput = "https://www." + bookmarkInput + ".com";
     }
-  // var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
-  // bookmarkInput = "https://www." + bookmarkInput + ".com";
-  // if (!urlPattern.test(bookmarkInput)) {
-  //   alert('Please enter a valid URL.');
-  //   return;
-  // }
+ 
+    // Check if the input ends with a dot and doesn't have a valid extension
+    if (/^(.*\.)?[a-z0-9-]+\.[a-z]+(\.[a-z]+)?$/i.test(bookmarkInput) && !/\.[a-z]+$/.test(bookmarkInput)) {
+      bookmarkInput += ".com";
+    }
+    
+      // // Special handling for specific TLDs
+      // const specialTLDs = ["org", "tu", "edu", "gov", "net", "mil", "int", "io", "co", "ai", "uk", "ca", "dev", "me", "de", "app", "in", "eu", "gg", "to", "ph", "nl", "id", "inc", "website", "xyz", "club", "online", "info", "store", "best", "live", "tv", "us", "tech", "pw", "pro", "cx", "mx", "fm", "cc", "world", "space", "vip", "life", "shop", "host", "fun", "biz", "icu", "design", "art"];
+      // const parsedTLD = bookmarkInput.split('.').pop(); // Get the last part after the last dot
+      // if (specialTLDs.includes(parsedTLD)) {
+      //   bookmarkInput = bookmarkInput.slice(0, -4); // Remove the ".com" from the end
+      // }
 
-  // Check if the input ends with a dot and doesn't have a valid extension
-  if (/^(.*\.)?[a-z0-9-]+\.[a-z]+(\.[a-z]+)?$/i.test(bookmarkInput) && !/\.[a-z]+$/.test(bookmarkInput)) {
-    bookmarkInput += ".com";
-  }
-  
-  
+      // Special handling for specific domains
+      const specialDomains = ["mail.google.com", "drive.google.com", "chat.openai.com", "photos.google.com", "web.whatsapp.com"];
+      const parsedDomain = getWebsiteName(bookmarkInput);
+      if (specialDomains.includes(parsedDomain)) {
+        bookmarkInput = "https://" + parsedDomain;
+    }
+
   var websiteName = getWebsiteName(bookmarkInput);
   var newBookmark = document.createElement('a');
   newBookmark.href = bookmarkInput;
