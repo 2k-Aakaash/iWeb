@@ -411,3 +411,4 @@ function loadBookmarks() {
     linksTextContainer.appendChild(newBookmarkContainer);
   }
 }
+
