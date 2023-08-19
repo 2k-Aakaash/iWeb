@@ -227,6 +227,7 @@ body {
   
   .box {
     overflow-y: auto;
+    scroll-behavior: smooth; /* Add this line */
   }
   
   .box::-webkit-scrollbar {
@@ -443,6 +444,7 @@ body {
   z-index: 9999;
   height: 300px;
   overflow-y: auto; 
+  scroll-behavior: smooth; /* Add this line */
   }
 
   .modal-content::-webkit-scrollbar {
