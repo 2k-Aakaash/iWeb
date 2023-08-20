@@ -833,7 +833,7 @@ body {
     border-radius: 15px;
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    z-index: 9999;
+    z-index: 1;
     background: rgba( 255, 255, 255, 0.2 );
     box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
     backdrop-filter: blur( 24px );
@@ -842,10 +842,34 @@ body {
     bottom: 50px;
     left: 10px;
     position: fixed;
-    width: 200px;
-    height: 270px;
+    width: 150px;
+    height: 150px;
+    transition: height 0.3s ease, opacity 0.3s ease;
+    position: fixed;
+    overflow: hidden;
   } 
+
+  .font-container.active {
+    display: block;
+    animation: dropUp 0.3s ease; 
+  }
   
+  @keyframes dropUp {
+    from {
+      transform: translateY(20px); /* Start slightly below the button */
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0); /* Move to its original position */
+      opacity: 1;
+    }
+  }
+  
+  .font-container.expanded {
+    height: 255px; 
+    transition: height 0.3s ease; 
+  }
+
   .font-container.hidden {
     display: none;
   }
@@ -1002,10 +1026,12 @@ body {
   
   #name-input {
     padding: 10px;
-    font-size: 16px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: #000000;
+    width: 115px;
+    height: 15px;
   }
 
   #name-input::placeholder{
