@@ -5,7 +5,7 @@
 
 ![Custom Homepage Example](https://ik.imagekit.io/026k2i7ys/homepage.PNG?updatedAt=1691686107647)
 
-Discover a sophisticated iWeb on GitHub. Elevate your web presence with sleek designs, seamless navigation, and extensive customization options. Redefine Professionalism today!
+Explore the sophistication of iweb on GitHub. Elevate your web presence with sleek designs, seamless navigation, and extensive customization options. Redefine professionalism today with our innovative web experience!
 
 Note:
 1. This homepage currently has some bugs, which will be addressed in future releases arriving shortly.
