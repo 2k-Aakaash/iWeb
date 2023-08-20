@@ -1037,11 +1037,18 @@ const motivationalPhrases = [
     "Triumph carved from persistence."
   ];
   
+  function getMotivationalPhrase() {
+    const now = new Date();
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    const selectedPhraseIndex = dayOfYear % motivationalPhrases.length;
+    return motivationalPhrases[selectedPhraseIndex];
+  }
+
   let currentPhraseIndex;
 
-function getRandomQuoteIndex() {
-  return Math.floor(Math.random() * motivationalPhrases.length);
-}
+// function getRandomQuoteIndex() {
+//   return Math.floor(Math.random() * motivationalPhrases.length);
+// }
 
 function updateMotivationalPhrase() {
   const now = new Date();
@@ -1053,7 +1060,8 @@ function updateMotivationalPhrase() {
   }
 
   const quoteSpan = document.getElementById('quote');
-  quoteSpan.textContent = motivationalPhrases[currentPhraseIndex];
+  const motivationalPhrase = getMotivationalPhrase();
+  quoteSpan.textContent = motivationalPhrase;
 }
 
 // function changeQuoteManually() {
@@ -1064,10 +1072,11 @@ function updateMotivationalPhrase() {
 
 // Call the function initially to set the phrase on page load
 const storedIndex = localStorage.getItem('currentPhraseIndex');
-currentPhraseIndex = storedIndex !== null ? parseInt(storedIndex, 10) : getRandomQuoteIndex();
+currentPhraseIndex = storedIndex !== null ? parseInt(storedIndex, 10) : 0;
 localStorage.setItem('currentPhraseIndex', currentPhraseIndex); // Store the index for future refreshes
 const quoteSpan = document.getElementById('quote');
-quoteSpan.textContent = motivationalPhrases[currentPhraseIndex];
+const initialMotivationalPhrase = getMotivationalPhrase();
+quoteSpan.textContent = initialMotivationalPhrase;
 
 // Call the function every minute to check if it's 12:00 AM
 setInterval(updateMotivationalPhrase, 60000);
