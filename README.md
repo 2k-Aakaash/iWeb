@@ -3,7 +3,7 @@
 ![Total Views](https://img.shields.io/github/downloads/2k-Aakaash/custom-homepage/total)
 ![Total Views](https://img.shields.io/github/watchers/2k-Aakaash/custom-homepage)
 
-![Custom Homepage Example](https://ik.imagekit.io/026k2i7ys/homepage.PNG?updatedAt=1691686107647)
+![iWeb Preview](https://ik.imagekit.io/026k2i7ys/iWeb.PNG?updatedAt=1692509821147)
 
 Explore the sophistication of iweb on GitHub. Elevate your web presence with sleek designs, seamless navigation, and extensive customization options. Redefine professionalism today with our innovative web experience!
 
