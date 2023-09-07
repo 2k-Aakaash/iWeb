@@ -1,3 +1,7 @@
+*{
+  font-family: 'sf_pro_displaysemibold';
+}
+
 body {
   background-color: #202020;
   background-repeat: no-repeat;
@@ -240,6 +244,7 @@ input[type="checkbox"]:checked + label > span:before {
   outline: none;
   background-color: transparent;
   color: black;
+  font-family: 'sf_pro_displaysemibold';
   font-size: 14px;
   padding: 5px 10px;
   width: 130px;
@@ -330,6 +335,7 @@ input[type="checkbox"]:checked + label > span:before {
   outline: none;
   background-color: transparent;
   color: white;
+  font-family: 'sf_pro_displaysemibold';
   font-size: 16px;
   padding: 5px 10px;
   width: 280px; 
@@ -1086,10 +1092,12 @@ input[type="checkbox"]:checked + label > span:before {
   
   #name-input {
     padding: 10px;
-    font-size: 16px;
+    width: 120px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: #000000;
+    font-family: 'sf_pro_displaysemibold';
   }
 
   #name-input::placeholder{
