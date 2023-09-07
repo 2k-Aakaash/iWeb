@@ -3,7 +3,7 @@ function showFileInput() {
     var fileInput = document.getElementById('fileInput');
     fileInput.click();
   }
-
+  
   // Function to handle file selection
   function handleFileSelect(event) {
     var file = event.target.files[0];
@@ -131,14 +131,7 @@ document.querySelectorAll('.font-option').forEach(fontOption => {
   });
 });
 
-//Dropup animation added
-const customButton = document.querySelector('.custom-button');
-const fontContainer = document.querySelector('.font-container');
-const customFontButton = document.querySelector('.custom-font-button'); 
+fontButton.addEventListener('click', () => {
+  fontBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
-customFontButton.addEventListener('click', () => {
-  fontContainer.classList.toggle('expanded');
-});
-customButton.addEventListener('click', () => {
-fontContainer.classList.toggle('active');
-});
