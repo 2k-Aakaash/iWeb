@@ -541,11 +541,12 @@ input[type="checkbox"]:checked + label > span:before {
     padding: 10px 0px;
   }
   
-  .close {
+  .close-notes {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
+  cursor: default;
   }
   
   input:focus{
@@ -925,7 +926,7 @@ input[type="checkbox"]:checked + label > span:before {
     left: 10px;
     position: fixed;
     width: 150px;
-    height: 150px;
+    height: 190px;
     overflow-y: auto;
     scrollbar-width: none; /* Hide the scrollbar on Firefox */
   } 
@@ -1004,7 +1005,7 @@ input[type="checkbox"]:checked + label > span:before {
     position: fixed;
     left: 0;
     margin-left: 10px;
-    top: 80px;
+    top: 120px;
   }
   
   .custom-font-button:hover{
@@ -1014,7 +1015,32 @@ input[type="checkbox"]:checked + label > span:before {
   .custom-font-button:focus{
     transform: scale(0.90);
   }
+
+  .remove-bg-button{
+    background: rgba( 255, 255, 255, 0.2 );
+    backdrop-filter: blur( 7px );
+    -webkit-backdrop-filter: blur( 7px );
+    border-radius: 10px;
+    border:none;
+    height: 30px;
+    width: 120px;
+    font-size: 15px;
+    font-family: 'SFRounded-Semibold';
+    color: #ffffff;
+    transition: transform 0.1s ease-in;
+    position: fixed;
+    left: 10px;
+    top: 80px;
+  }
   
+  .remove-bg-button:hover{
+    transform: scale(0.96);
+  }
+  
+  .remove-bg-button:focus{
+    transform: scale(0.90);
+  }
+
   .box-container {
     display: none;
     border-radius: 15px;
@@ -1026,7 +1052,7 @@ input[type="checkbox"]:checked + label > span:before {
     backdrop-filter: blur( 24px );
     -webkit-backdrop-filter: blur( 24px );
     border: 1px solid rgba( 255, 255, 255, 0.18 );
-    top: 140px;
+    top: 180px;
     left: 10px;
     position: fixed;
     width: 120px;
@@ -1080,7 +1106,7 @@ input[type="checkbox"]:checked + label > span:before {
     top: 0;
     left: 0;
     width: 150px;
-    height: 150px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1166,3 +1192,193 @@ input[type="checkbox"]:checked + label > span:before {
   #confirm-delete-button:focus{
     transform: scale(0.90);
   }
+
+  /* Overlay styles */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+.overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  max-width: 80%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Add any additional styles for your overlay content here */
+/* CSS for the Remove BG window */
+.remove-bg-window {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.308);
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.remove-bg-content {
+  max-width: 80%;
+  margin: 20px auto;
+  position: relative;
+  padding: 10px; 
+  /* background: rgba( 255, 255, 255, 0.2 ); */
+  box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
+  backdrop-filter: blur( 24px );
+  -webkit-backdrop-filter: blur( 24px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  z-index: 9999;
+  overflow-y: auto; 
+  scroll-behavior: smooth; /* Add this line */
+}
+
+/* CSS for the image grid */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(332px, 1fr)); /* Responsive grid view with max-width 332px */
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center; /* Center the grid items */
+}
+
+/* Checkbox styles */
+.image-item input[type="checkbox"] {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  left: 10px; /* Adjust the left position as needed */
+  z-index: 2; /* Place the checkbox above the image */
+  cursor: pointer;
+  opacity: 1; /* Make the checkbox visible */
+}
+
+.image-item label {
+  position: relative; /* Use relative positioning for the label */
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.image-item {
+  position: relative;
+  width: 332px; /* Maximum width */
+  height: 187px; /* Maximum height */
+  overflow: hidden; /* Clip images to 332x187px */
+  border-radius: 10px;
+  transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.image-item:hover{
+  transform: scale(1.015)
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+
+/* CSS for the navigation bar */
+.navbar {
+  background: rgba( 255, 255, 255, 0.2 );
+  box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
+  backdrop-filter: blur( 24px );
+  -webkit-backdrop-filter: blur( 24px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  z-index: 9999;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.navbar-text {
+  flex: 1; /* Takes the available space */
+  text-align: left;
+  font-size: 18px;
+  padding-left: 10px;
+}
+
+/* CSS for responsive image size */
+@media screen and (max-width: 90%) {
+  .image-item {
+    width: 90%; /* Reduce image width to 90% of the container */
+    height: auto; /* Auto height to maintain aspect ratio */
+  }
+  
+  .image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure images fit within the 90% width */
+  }
+}
+
+/* CSS for the close and delete buttons (unchanged) */
+.close-button,
+.delete-button {
+  background: rgba( 255, 255, 255, 0.2 );
+  backdrop-filter: blur( 7px );
+  -webkit-backdrop-filter: blur( 7px );
+  border-radius: 10px;
+  border:none;
+  width: 140px;
+  height: 30px;
+  font-size: 15px;
+  margin: 0;
+  font-family: 'SFRounded-Semibold';
+  color: #ffffff;
+  transition: transform 0.1s ease-in;
+}
+
+.delete-button:hover{
+  transform: scale(0.96);
+}
+
+.close-button hover{
+  transform: scale(0.96);
+}
+
+.delete-button:focus{
+  transform: scale(0.90);
+}
+
+.close-button:focus{
+  transform: scale(0.90);
+}
+
+.close-button {
+  float: left;
+  width: 30px;
+  margin-left: 10px;
+  transition: transform 0.1s ease-in;
+}
+
+.delete-button {
+  float: right;
+}
