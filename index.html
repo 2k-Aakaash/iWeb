@@ -26,7 +26,7 @@
   <div class="time-container">
   <div class="center">
     <span id="clock" id="text" class="clock-time"></span>
-    <p class="name-intro"><span id="quote"></span><span id="custom-name"></span>!</p>
+    <p class="name-intro type-animation animating"><span id="quote"></span><span id="custom-name"></span>!</p>
     <!-- <button id="change-quote-button">Change Quote</button> -->
   </div>
 
@@ -34,6 +34,7 @@
     <p class="search-bar-text">What is your Main Focus Today?</p>
   <form id="search-form">
   <input type="text" id="search-input" autocomplete="on" autofocus="on">
+  
 </form>
 </div>
 </div>
@@ -77,19 +78,16 @@
   <button id="bgButton" onclick="showFileInput()" class="bg-button">Custom BG</button> 
    <input type="file" id="fileInput" accept=".jpg, .jpeg, .png, .gif" style="display: none">
    <button id="custom-name-btn" class="custom-name-button">Custom Name</button>
+   <button id="remove-bg-button" class="remove-bg-button">Remove BG</button>
+
    <button id="fontButton" class="custom-font-button">Custom Font</button>
+
  <div id="fontBox" class="box-container">
   <img src="images/png/12.png" class="font-option" data-font-family="new_york_extra_largeheavy">
   <img src="images/png/12-2.png" class="font-option" data-font-family="SF-Pro Rails">
   <img src="images/png/12-1.png" class="font-option" data-font-family="sf_pro_-_stencilregular">
   <img src="images/png/12-3.png" class="font-option" data-font-family="sf_pro_displaysemibold">
 </div>
-
-  <div class="color-palette">
-    <div class="color-option" id="vibrant-color"></div>
-    <div class="color-option" id="light-muted-color"></div>
-    <div class="color-option" id="dark-vibrant-color"></div>
-  </div>
 
    <div class="input-container" id="input-container">
     <input type="text" id="name-input" placeholder="Enter your name">
@@ -98,6 +96,20 @@
 </div>
 </div>
 
+<div id="remove-bg-window" class="remove-bg-window">
+  <div class="remove-bg-content">
+    <div class="navbar">
+      <p class="navbar-text">Remove Background Images</p>
+      <button id="delete-bg-button" class="delete-button">Delete Selected</button>
+      <button id="close-overlay" class="close-button">×</button>
+    </div>
+
+    <div class="image-grid">
+      <!-- Saved images will be displayed here -->
+    </div>
+
+  </div>
+</div>
 
 <div class="copyright-section">
   <p>&copy; 2023 iWeb. All rights reserved.</p>
@@ -107,7 +119,7 @@
 <button id="add-note-btn">Notes</button>
 <div id="note-modal" class="modal">
 <div class="modal-content">
-  <span class="close">&times;</span>
+  <span class="close-notes">&times;</span>
   <textarea id="note-textarea" placeholder="Type Something..."></textarea>
   <div id="notes-container" class="custom-scrollbar"></div>
   <div class="modal-buttons">
@@ -118,6 +130,7 @@
 </div>
 </div>
 </div>
+
 
 <!--JS Code Links-->
   <script src="js/time.js"></script>
