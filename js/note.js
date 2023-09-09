@@ -4,7 +4,7 @@ document.getElementById("add-note-btn").addEventListener("click", function() {
   });
   
   // Close the note modal
-  document.getElementsByClassName("close")[0].addEventListener("click", function() {
+  document.getElementsByClassName("close-notes")[0].addEventListener("click", function() {
   document.getElementById("note-modal").style.display = "none";
   });
   
@@ -113,8 +113,9 @@ function saveNote() {
   
   var noteText = document.createElement("span");
   noteText.textContent = notes[i];
+  // noteText.style.wordWrap = "break-word"; // Add this line to enable word wrap
+  noteText.className = "note-content"; // Add this line to apply the CSS class
   noteDiv.appendChild(noteText);
-  
   notesContainer.appendChild(noteDiv);
   }
   }
