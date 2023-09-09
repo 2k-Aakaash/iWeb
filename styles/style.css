@@ -1379,6 +1379,7 @@ input[type="checkbox"]:checked + label > span:before {
   transition: transform 0.1s ease-in;
 }
 
-.delete-button {
+/* .delete-button {
   float: right;
 }
+ */
