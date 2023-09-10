@@ -1441,9 +1441,7 @@ input[type="checkbox"]:checked + label > span:before {
   top: 15px;
 }
 
-body{
-  scroll-behavior: unset;
-}
+
 
 @media screen and (max-width: 410px) {
   .modal-content{
@@ -1471,4 +1469,8 @@ body{
   .date-day-container{
     font-size: 10px;
   }
+}
+
+body{
+  overflow-y: hidden;
 }
