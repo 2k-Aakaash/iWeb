@@ -538,7 +538,12 @@ input[type="checkbox"]:checked + label > span:before {
   font-weight: bold;
   cursor: default;
   }
-  
+
+  /* Update the CSS for note content to preserve line breaks */
+  .note-content {
+    white-space: pre-line;
+  }
+
   input:focus{
     outline: none;
   }
