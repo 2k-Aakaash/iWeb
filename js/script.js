@@ -124,6 +124,29 @@ function closeLinksBox() {
   linksBox.style.display = "none";
 }
 
+// Add this function to open the website when the bookmark container is clicked
+function openWebsite(url) {
+  window.open(url, '_blank');
+}
+
+// Add this function to attach click event listeners to the bookmark containers
+function attachClickEventListenersToBookmarks() {
+  const bookmarkContainers = document.querySelectorAll('.bookmark-container');
+  bookmarkContainers.forEach((container) => {
+    container.addEventListener('click', () => {
+      const url = container.querySelector('a').href; // Extract the URL
+      openWebsite(url); // Open the website in a new tab/window
+    });
+  });
+}
+
+// Call the function to attach click event listeners when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadBookmarks();
+  attachClickEventListenersToBookmarks(); // Attach click event listeners to existing bookmarks
+});
+
+
 function closeCustomizationBox() {
   const customizationBox = document.getElementById("font-box-container");
   customizationBox.classList.add("hidden");
