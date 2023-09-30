@@ -13,6 +13,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'sf_pro_displaysemibold';
+ 
   }
 
   ::placeholder{
@@ -222,7 +223,7 @@ input[type="checkbox"]:checked + label > span:before {
   align-items: center;
   cursor: default;
   margin-top: 100px;
-  font-family: 'sf_pro_displaysemibold';
+  font-family: 'SFProDisplay-Heavy';
   }
   
   .clock-container {
@@ -298,6 +299,10 @@ input[type="checkbox"]:checked + label > span:before {
     color: #000;
     text-decoration: none;
     word-break: break-all;
+  }
+
+  .bookmark-container:hover{
+    cursor: pointer;
   }
   
   .box {
@@ -538,7 +543,7 @@ input[type="checkbox"]:checked + label > span:before {
   font-weight: bold;
   cursor: default;
   }
-
+  
   /* Update the CSS for note content to preserve line breaks */
   .note-content {
     white-space: pre-line;
@@ -718,6 +723,32 @@ input[type="checkbox"]:checked + label > span:before {
   margin-left: 10px;
   transition: transform 0.1s ease-in;
   }
+
+  #drag-note-btn{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba( 255, 255, 255, 0.2 );
+    backdrop-filter: blur( 7px );
+    -webkit-backdrop-filter: blur( 7px );
+    border-radius: 10px;
+    border:none;
+    height: 30px;
+    width: 70px;
+    font-size: 15px;
+    font-family: 'SFRounded-Semibold';
+    color: #ffffff;
+    transition: transform 0.1s ease-in;
+    }
+    
+    #drag-note-btn:hover{
+      transform: scale(0.96);
+    }
+    
+    #drag-note-btn:focus{
+      transform: scale(0.90);
+    }
+    
   
   #save-note-btn:hover, #delete-note-btn:hover, #edit-note-btn:hover{
     transform: scale(0.96);
