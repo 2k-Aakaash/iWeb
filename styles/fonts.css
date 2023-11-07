@@ -50,3 +50,22 @@
       src: url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff2?updatedAt=1690380080861') format('woff2'),
            url('https://ik.imagekit.io/026k2i7ys/fonts/sf_pro_-_semibold_rails-webfont.woff?updatedAt=1690380085836') format('woff');
     }
+
+    @font-face {
+      font-family: 'SFProDisplay-Black';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/SFProDisplay-Black.woff2?updatedAt=1695040120275') format('woff2'),
+          url('https://ik.imagekit.io/026k2i7ys/fonts/SFProDisplay-Black.woff?updatedAt=1695040136622') format('woff');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+  }
+  
+  @font-face {
+      font-family: 'SFProDisplay-Heavy';
+      src: url('https://ik.imagekit.io/026k2i7ys/fonts/SFProDisplay-Heavy.woff2?updatedAt=1695040122019') format('woff2'),
+          url('https://ik.imagekit.io/026k2i7ys/fonts/SFProDisplay-Heavy.woff?updatedAt=1695040137353') format('woff');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+  }
+  
