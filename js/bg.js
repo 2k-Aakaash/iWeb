@@ -25,34 +25,54 @@ function extractAverageColor(imagePath) {
   }
 }
       
+// function setBackgroundAndTextColor(imagePath) {
+//   var bodyElement = document.body;
+//   var newImageElement = document.createElement("div");
+//   newImageElement.style.backgroundImage = "url('" + imagePath + "')";
+//   newImageElement.className = "fade-transition";
+
+//   bodyElement.insertBefore(newImageElement, bodyElement.firstChild);
+
+//   newImageElement.style.opacity = 1;
+
+//   // localStorage.setItem('lastBackgroundImage', imagePath);
+
+//   setTimeout(function () {
+//     bodyElement.style.backgroundImage = "url('" + imagePath + "')";
+//     bodyElement.removeChild(newImageElement);
+//     isTransitioning = false;
+//   }, 500);
+
+//   extractAverageColor(imagePath);
+// }
+
 function setBackgroundAndTextColor(imagePath) {
   var bodyElement = document.body;
-  var newImageElement = document.createElement("div");
-  newImageElement.style.backgroundImage = "url('" + imagePath + "')";
-  newImageElement.className = "fade-transition";
-
-  bodyElement.insertBefore(newImageElement, bodyElement.firstChild);
-
-  newImageElement.style.opacity = 1;
-
-  // localStorage.setItem('lastBackgroundImage', imagePath);
-
-  setTimeout(function () {
-    bodyElement.style.backgroundImage = "url('" + imagePath + "')";
-    bodyElement.removeChild(newImageElement);
-    isTransitioning = false;
-  }, 500);
-
+  
+  bodyElement.style.backgroundImage = "url('" + imagePath + "')";
   extractAverageColor(imagePath);
 }
+
+// function changeBackground(timestamp) {
+//   if (!isTransitioning) {
+//     isTransitioning = true;
+//     currentIndex = (currentIndex + 1) % backgroundImages.length;
+//     setBackgroundAndTextColor(backgroundImages[currentIndex]);
+//   }
+// }
 
 function changeBackground(timestamp) {
   if (!isTransitioning) {
     isTransitioning = true;
     currentIndex = (currentIndex + 1) % backgroundImages.length;
     setBackgroundAndTextColor(backgroundImages[currentIndex]);
+    
+    setTimeout(function () {
+      isTransitioning = false;
+    }, 500);
   }
 }
+
 
 function changeBackgroundManually() {
   currentIndex = (currentIndex + 1) % backgroundImages.length;
@@ -185,3 +205,4 @@ window.addEventListener('click', function(event) {
 document.getElementById('delete-bg-button').addEventListener('click', showDeleteConfirmation);
 
 // Rest of your existing JavaScript code...
+
