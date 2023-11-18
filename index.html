@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" href="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" type="image/svg+xml">
 
     <!--CDN Script tag-->
@@ -14,7 +13,7 @@
     <!--Link Elements of Stylesheets-->
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/fonts.css">
-  
+    
 </head>
 
 <body>
@@ -32,8 +31,9 @@
   </div>
 
   <div class="search-container" style="margin-top: 70px;">
-    <p class="search-bar-text">What is your Main Focus Today?</p>
-  <form id="search-form">
+    <label class="search-bar-text" id="search-label"></label>
+    <!-- <button id="change-search-button">Change Manually</button> -->
+    <form id="search-form">
   <input type="text" id="search-input" autocomplete="on" autofocus="on">
   
 </form>
@@ -105,7 +105,9 @@
       <button id="close-overlay" class="close-button">×</button>
     </div>
 
-    <div class="image-grid"></div>
+    <div class="image-grid">
+      <!-- Saved images will be displayed here -->
+    </div>
 
   </div>
 </div>
@@ -120,11 +122,12 @@
 <div class="modal-content">
   <span class="close-notes">&times;</span>
   <textarea id="note-textarea" placeholder="Type Something..."></textarea>
-  <div id="notes-container" class="custom-scrollbar"></div>
+  <div id="notes-container" class="custom-scrollbar" id="notes-container"></div>
   <div class="modal-buttons">
     <button id="save-note-btn" onclick="saveNote()">Save Note</button>
     <button id="delete-note-btn">Delete Note</button>
     <button id="edit-note-btn">Edit Note</button>
+    <!-- <button id="drag-note-btn">Drag Note</button> -->
   </div>
 </div>
 </div>
@@ -141,5 +144,6 @@
   <script src="js/weather.js"></script>
   <script src="js/customization.js"></script>
   <script src="js/quote.js"></script>
+  <script src="js/search-bar-text.js"></script>
 </body>
 </html>
