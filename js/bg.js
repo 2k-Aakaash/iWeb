@@ -203,6 +203,3 @@ window.addEventListener('click', function(event) {
 
 // Add an event listener to trigger the delete confirmation
 document.getElementById('delete-bg-button').addEventListener('click', showDeleteConfirmation);
-
-// Rest of your existing JavaScript code...
-
