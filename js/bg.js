@@ -4,7 +4,7 @@ var backgroundImages = [
 var backgroundImages = JSON.parse(localStorage.getItem('backgroundImages')) || [];
 var currentIndex = 0;
 var isTransitioning = false;
-var intervalDuration = 10800000; // 10800000 is 3 hours in milliseconds
+var transitionDuration = 200;
 
 function extractAverageColor(imagePath) {
   var image = new Image();
@@ -19,6 +19,7 @@ function extractAverageColor(imagePath) {
       var textColor = dominantColor.getHex();
       var textElements = document.querySelectorAll("#clock");
       textElements.forEach((element) => {
+        element.style.transition = `color ${transitionDuration}ms ease-in-out`;
         element.style.color = textColor;
       });
     }
