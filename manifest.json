@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "iWeb",
+    "version": "0.4.7",
+    "description": "iWeb: Individualized Web Interface.",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "background": {
+        "service_worker": "service-worker.js"
+    },
+    "action": {
+        "default_icon": {
+            "16": "images/png/iWeb Logo 16.png",
+            "48": "images/png/iWeb Logo 48.png",
+            "128": "images/png/iWeb Logo 128.png"
+        }
+    },
+    "icons": {
+        "16": "images/png/iWeb Logo 16.png",
+        "48": "images/png/iWeb Logo 48.png",
+        "128": "images/png/iWeb Logo 128.png"
+    }
+}
