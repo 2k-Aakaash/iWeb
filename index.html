@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="icon" href="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" type="image/svg+xml">
 
     <!--CDN Script tag-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vibrant.js/1.0.0/Vibrant.min.js" integrity="sha512-V6rhYmJy8NZQF8F0bhJiTM0iI6wX/FKJoWvYrCM15UIeb6p38HjvTZWfO0IxJnMZrHWUJZJqLuWK0zslra2FVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/vibrant.js"></script>
 
     <!--Link Elements of Stylesheets-->
     <link rel="stylesheet" href="styles/style.css">
@@ -28,36 +29,37 @@
     <span id="clock" id="text" class="clock-time"></span>
     <!-- style="text-shadow: 1px 1.5px rgba(0, 0, 0, 0.434);" -->
     <p class="name-intro type-animation animating"><span id="quote"></span><span id="custom-name"></span>!</p>
+    <!-- <button id="change-quote-button">Change Quote</button> -->
   </div>
 
   <div class="search-container" style="margin-top: 70px;">
-    <label class="search-bar-text" id="search-label">What's your Main Focus Today?</label>
+    <label class="search-bar-text" id="search-label"></label>
     <!-- <button id="change-search-button">Change Manually</button> -->
     <form id="search-form">
-  <input type="text" id="search-input" autocomplete="on" autofocus="on">
-  
-</form>
+      <input type="text" id="search-input" autocomplete="on" autofocus="on">
+    </form>
 </div>
 </div>
 </div>
 
 <div class="links-container">
-<button class="link-button" onclick="showBox()">Links</button>
-<button onclick="changeBackgroundManually()" class="change-bg">Change BG</button>
+<button id="linksButton" class="link-button">Links</button>
+<button class="change-bg">Change BG</button>
 
 <div id="box" class="box">
 
   <div class="bookmark-input-container">
     <input type="text" id="bookmark-input" class="link-input" placeholder="Enter URL">
-    <button onclick="addBookmark()" class="add-bookmark">+</button>
+    <button id="addBookmarkButton" class="add-bookmark">+</button>
   </div>
   
   <div class="links-text-container">
     <div id="context-menu" class="context-menu"></div>
   </div>
   <button id="drag-n-drop-button" class="drag-n-drop-button">Drag 'n Drop</button>
-  <button id="delete-links-button" onclick="toggleDeleteMode()">Delete Links</button>
-  <button id="confirm-delete-button" class="delete-button" style="display: none;" onclick="confirmDelete()">Confirm Delete</button>
+  <button id="delete-links-button">Delete Links</button>
+  <button id="confirm-delete-button" class="delete-button" style="display: none;">Confirm Delete</button>
+  
 
 </div>
 </div>
@@ -65,7 +67,7 @@
 <div class="top-right-container">
   <div class="weather-container">
     <input type="text" id="locationInput">
-    <button onclick="getWeather()" class="get-weather">Get Weather</button>
+    <button class="get-weather">Get Weather</button>
     <div id="weatherInfo"></div>
 </div>
 </div>
@@ -76,7 +78,7 @@
   
 <div id="font-box-container" class="font-container hidden">
   
-  <button id="bgButton" onclick="showFileInput()" class="bg-button">Custom BG</button> 
+  <button id="bgButton" class="bg-button">Custom BG</button>
    <input type="file" id="fileInput" accept=".jpg, .jpeg, .png, .gif" style="display: none">
    <button id="custom-name-btn" class="custom-name-button">Custom Name</button>
    <button id="remove-bg-button" class="remove-bg-button">Remove BG</button>
@@ -124,7 +126,7 @@
   <textarea id="note-textarea" placeholder="Type Something..."></textarea>
   <div id="notes-container" class="custom-scrollbar" id="notes-container"></div>
   <div class="modal-buttons">
-    <button id="save-note-btn" onclick="saveNote()">Save Note</button>
+    <button id="save-note-btn">Save Note</button>
     <button id="delete-note-btn">Delete Note</button>
     <button id="edit-note-btn">Edit Note</button>
     <!-- <button id="drag-note-btn">Drag Note</button> -->
@@ -145,5 +147,6 @@
   <script src="js/customization.js"></script>
   <script src="js/quote.js"></script>
   <script src="js/search-bar-text.js"></script>
+  <script src="js/deleteLinks.js"></script>
 </body>
 </html>
