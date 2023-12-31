@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('.get-weather').addEventListener('click', getWeather);
+})
+
 function getWeather() {
   var location = document.getElementById('locationInput').value;
   var url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=bc3896442fb1b6f7c4efe516c9a3d57f&units=metric`;

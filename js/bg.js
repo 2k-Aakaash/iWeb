@@ -1,10 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('.change-bg').addEventListener('click', changeBackgroundManually);
+})
+
 var backgroundImages = [
   // Here where the BG image are stored and goes for interval
 ];
 var backgroundImages = JSON.parse(localStorage.getItem('backgroundImages')) || [];
 var currentIndex = 0;
 var isTransitioning = false;
-var transitionDuration = 200;
+var transitionDuration = 200; // 500 milliseconds
+// var intervalDuration = 10800000; // 10800000 is 3 hours in milliseconds
 
 function extractAverageColor(imagePath) {
   var image = new Image();
@@ -19,33 +24,13 @@ function extractAverageColor(imagePath) {
       var textColor = dominantColor.getHex();
       var textElements = document.querySelectorAll("#clock");
       textElements.forEach((element) => {
+        // Apply the fade transition for the clock color change
         element.style.transition = `color ${transitionDuration}ms ease-in-out`;
         element.style.color = textColor;
       });
     }
   }
 }
-      
-// function setBackgroundAndTextColor(imagePath) {
-//   var bodyElement = document.body;
-//   var newImageElement = document.createElement("div");
-//   newImageElement.style.backgroundImage = "url('" + imagePath + "')";
-//   newImageElement.className = "fade-transition";
-
-//   bodyElement.insertBefore(newImageElement, bodyElement.firstChild);
-
-//   newImageElement.style.opacity = 1;
-
-//   // localStorage.setItem('lastBackgroundImage', imagePath);
-
-//   setTimeout(function () {
-//     bodyElement.style.backgroundImage = "url('" + imagePath + "')";
-//     bodyElement.removeChild(newImageElement);
-//     isTransitioning = false;
-//   }, 500);
-
-//   extractAverageColor(imagePath);
-// }
 
 function setBackgroundAndTextColor(imagePath) {
   var bodyElement = document.body;
@@ -53,14 +38,6 @@ function setBackgroundAndTextColor(imagePath) {
   bodyElement.style.backgroundImage = "url('" + imagePath + "')";
   extractAverageColor(imagePath);
 }
-
-// function changeBackground(timestamp) {
-//   if (!isTransitioning) {
-//     isTransitioning = true;
-//     currentIndex = (currentIndex + 1) % backgroundImages.length;
-//     setBackgroundAndTextColor(backgroundImages[currentIndex]);
-//   }
-// }
 
 function changeBackground(timestamp) {
   if (!isTransitioning) {

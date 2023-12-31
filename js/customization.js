@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('bgButton').addEventListener('click', showFileInput);
+})
+
 // Function to show the file input when the "Customization" button is clicked
 function showFileInput() {
     var fileInput = document.getElementById('fileInput');
@@ -135,3 +139,7 @@ fontButton.addEventListener('click', () => {
   fontBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
+function closeCustomizationBox() {
+  const customizationBox = document.getElementById("font-box-container");
+  customizationBox.classList.add("hidden");
+}

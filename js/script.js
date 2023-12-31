@@ -1,6 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('linksButton').addEventListener('click', showBox);
+  document.getElementById('delete-links-button').addEventListener('click', toggleDeleteMode);
+  document.getElementById('confirm-delete-button').addEventListener('click', confirmDelete);
+  document.getElementById('addBookmarkButton').addEventListener('click', addBookmark);
   loadBookmarks();
 });
+
+function showBox() {
+  var box = document.getElementById('box');
+  box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'block' : 'none';
+}
+
 
 function addBookmark() {
   var bookmarkInput = document.getElementById('bookmark-input').value.trim();
@@ -20,13 +30,6 @@ function addBookmark() {
     if (/^(.*\.)?[a-z0-9-]+\.[a-z]+(\.[a-z]+)?$/i.test(bookmarkInput) && !/\.[a-z]+$/.test(bookmarkInput)) {
       bookmarkInput += ".com";
     }
-    
-      // // Special handling for specific TLDs
-      // const specialTLDs = ["org", "tu", "edu", "gov", "net", "mil", "int", "io", "co", "ai", "uk", "ca", "dev", "me", "de", "app", "in", "eu", "gg", "to", "ph", "nl", "id", "inc", "website", "xyz", "club", "online", "info", "store", "best", "live", "tv", "us", "tech", "pw", "pro", "cx", "mx", "fm", "cc", "world", "space", "vip", "life", "shop", "host", "fun", "biz", "icu", "design", "art"];
-      // const parsedTLD = bookmarkInput.split('.').pop(); // Get the last part after the last dot
-      // if (specialTLDs.includes(parsedTLD)) {
-      //   bookmarkInput = bookmarkInput.slice(0, -4); // Remove the ".com" from the end
-      // }
 
       // Special handling for specific domains
       const specialDomains = ["mail.google.com", "drive.google.com", "chat.openai.com", "photos.google.com", "web.whatsapp.com"];
@@ -147,15 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function closeCustomizationBox() {
-  const customizationBox = document.getElementById("font-box-container");
-  customizationBox.classList.add("hidden");
-}
-
-
 document.addEventListener("click", function(event) {
   const linksBox = document.getElementById("box");
-  const linksButton = document.querySelector(".link-button");
+  const linksButton = document.getElementById("linksButton");
   if (linksBox && !linksBox.contains(event.target) && !linksButton.contains(event.target)) {
     closeLinksBox();
   }
@@ -165,120 +162,9 @@ document.addEventListener("click", function(event) {
   if (customizationBox && !customizationBox.contains(event.target) && !customizationButton.contains(event.target)) {
     closeCustomizationBox();
   }
-
-  const notesBox = document.getElementById("note-modal");
-  const notesButton = document.getElementById("add-note-btn");
-  if (notesBox && !notesBox.contains(event.target) && !notesButton.contains(event.target)) {
-    closeNotesBox();
-  }
 });
 
 
-function closeNotesBox() {
-  const notesBox = document.getElementById("note-modal");
-  notesBox.style.display = "none";
-}
-
-let deleteMode = false;
-
-function toggleDeleteMode() {
-  deleteMode = !deleteMode;
-  const bookmarks = document.querySelectorAll('.bookmark-container');
-
-  for (const bookmark of bookmarks) {
-    let checkbox = bookmark.querySelector('input[type="checkbox"]');
-    
-    if (deleteMode && !checkbox) {
-      checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      // console.log(bookmarks)
-      checkbox.setAttribute("id",bookmark?.outerText)
-
-      bookmark.insertBefore(checkbox, bookmark.firstChild);
-    } else if (!deleteMode && checkbox) {
-      checkbox.remove();
-    }
-    bookmark.classList.toggle('delete-mode', deleteMode);
-  }
-
-  const confirmDeleteButton = document.getElementById('confirm-delete-button');
-  confirmDeleteButton.style.display = deleteMode ? 'block' : 'none';
-}
-
-
-function confirmDelete() {
-  const checkboxes = document.querySelectorAll('.bookmark-container input[type="checkbox"]');
-  const selectedBookmarks = Array.from(checkboxes).filter(checkbox => checkbox.checked);
-
-  if (selectedBookmarks.length === 0) {
-    alert('No bookmarks selected.');
-    return;
-  }
-
-  const isSingular = selectedBookmarks.length === 1;
-  const confirmationMessage = isSingular
-    ? 'Are you sure you want to delete the selected link? This action cannot be undone.'
-    : 'Are you sure you want to delete the selected links? This action cannot be undone.';
-
-  const confirmationDialog = createConfirmationDialog(confirmationMessage, () => {
-    const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-    // const updatedBookmarks = bookmarks.filter(bookmark =>{
-    //   !selectedBookmarks.some(checkbox => checkbox.closest('.bookmark-container').querySelector('a').href === bookmark.url)
-    // });
-
-    let ids = selectedBookmarks.map((book) => book.id)
-  
-    const updatedData = bookmarks.filter(data=>{
-      if(!ids.includes(data?.websiteName)){
-        return data
-      }  
-    }) 
-
-    localStorage.setItem('bookmarks', JSON.stringify(updatedData));
-    
-    selectedBookmarks.forEach(checkbox => {
-      const bookmarkContainer = checkbox.closest('.bookmark-container');
-      bookmarkContainer.remove();
-    });
-
-    toggleDeleteMode();
-    confirmationDialog.remove();
-  });
-  document.body.appendChild(confirmationDialog);
-}
-
-function createConfirmationDialog(message, onConfirm) {
-  const confirmationDialog = document.createElement('div');
-  confirmationDialog.className = 'confirmation-dialog';
-
-  const confirmationText = document.createElement('p');
-  confirmationText.textContent = message;
-  confirmationDialog.appendChild(confirmationText);
-
-  const confirmButton = document.createElement('button');
-  confirmButton.textContent = 'Delete';
-  confirmButton.className = 'delete-button';
-  confirmButton.addEventListener('click', onConfirm);
-  confirmationDialog.appendChild(confirmButton);
-
-  const cancelButton = document.createElement('button');
-  cancelButton.textContent = 'Cancel';
-  cancelButton.className = 'cancel-button'
-  cancelButton.addEventListener('click', () => {
-    confirmationDialog.remove();
-  });
-  confirmationDialog.appendChild(cancelButton);
-
-  return confirmationDialog;
-}
-
-function removeBookmarkFromLocalStorage(checkbox) {
-  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-  const websiteName = checkbox.nextElementSibling.textContent;
-  const updatedBookmarks = bookmarks.filter(bookmark => bookmark.websiteName !== websiteName);
-
-  localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
-}
 
 // Add this function to add the equals symbol to each link
 function addEqualsSymbolToLinks() {
@@ -389,13 +275,14 @@ function handleDragEnd(event) {
   event.target.classList.remove('dragged');
   draggedBookmark = null;
 
-  updateBookmarkOrder();
+  updateBookmarkOrder(); // Update the bookmark order after dragging ends
 }
+
 
 function updateBookmarkOrder() {
   const bookmarks = document.querySelectorAll('.bookmark-container');
   const updatedOrder = Array.from(bookmarks).map(bookmark => bookmark.querySelector('a').textContent);
-  
+
   const storedBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
   const updatedBookmarks = storedBookmarks.map(bookmark => {
     const newOrder = updatedOrder.indexOf(bookmark.websiteName);
@@ -403,7 +290,12 @@ function updateBookmarkOrder() {
   });
 
   localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
+
+  // After updating the order, re-render bookmarks
+  loadBookmarks();
+  attachClickEventListenersToBookmarks(); // Attach click event listeners to existing bookmarks
 }
+
 
 
 function loadBookmarks() {
@@ -434,4 +326,3 @@ function loadBookmarks() {
     linksTextContainer.appendChild(newBookmarkContainer);
   }
 }
-
