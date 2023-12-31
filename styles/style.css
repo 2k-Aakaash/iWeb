@@ -200,10 +200,6 @@ input[type="checkbox"]:checked + label > span:before {
   scale: 130%;
   }
   
-  .links-container {
-  position: relative;
-  }
-  
   .links-container .box {
   top: 30px;
   }
@@ -284,6 +280,7 @@ input[type="checkbox"]:checked + label > span:before {
   .bookmark-container {
     display: flex;
     align-items: center;
+    font-size: 16px !important;
     gap: 5px;
     margin: 5px 0;
     padding: 5px;
@@ -338,7 +335,6 @@ input[type="checkbox"]:checked + label > span:before {
   border: none;
   border: 1px solid rgba(255, 255, 255, 0.658);
   outline: none;
-  background-color: transparent;
   color: white;
   font-family: 'sf_pro_displaysemibold';
   font-size: 16px;
@@ -355,6 +351,20 @@ input[type="checkbox"]:checked + label > span:before {
   -webkit-backdrop-filter: blur( 7px );
   transition: transform 0.3s cubic-bezier(0.4, 0.2, 0.1, 1.6);
   } 
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .background-image-holder {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
   
   #search-input:hover{
     transform: scale(1.1);
@@ -365,10 +375,14 @@ input[type="checkbox"]:checked + label > span:before {
   }
   
   .search-container{
-    width: 300px;
+    /* width: 300px; */
     margin: 0 auto;
   }
   
+  #search-form{
+    display: flex;
+    justify-content: center;
+  }
   .name-intro{
   color: #ffffff;
   font-size: 24px;
@@ -543,11 +557,6 @@ input[type="checkbox"]:checked + label > span:before {
   font-weight: bold;
   cursor: default;
   }
-  
-  /* Update the CSS for note content to preserve line breaks */
-  .note-content {
-    white-space: pre-line;
-  }
 
   input:focus{
     outline: none;
@@ -596,8 +605,10 @@ input[type="checkbox"]:checked + label > span:before {
   }
 
   .note-content {
+    font-size: 16px !important;
     inline-size: 320px;
     overflow-wrap: break-word;
+    white-space: pre-line;
   }
 
   .checkbox {
@@ -620,6 +631,7 @@ input[type="checkbox"]:checked + label > span:before {
   margin-top: 10px;
   position: absolute;
   color: #fff;
+  font-size: 16px !important;
   }
   
   .confirmation-dialog button {
@@ -786,6 +798,7 @@ input[type="checkbox"]:checked + label > span:before {
   
   .mini-weather{
     border-radius: 30px;
+    font-size: 16px !important;
     background-color: lightcoral;
     width: 150px;
     display: flex;
@@ -845,6 +858,7 @@ input[type="checkbox"]:checked + label > span:before {
   .expanded-weather{
     width: 300px;
     z-index: 9999;
+    font-size: 16px !important;
     background: rgba( 255, 255, 255, 0.2 );
     backdrop-filter: blur( 7px );
     -webkit-backdrop-filter: blur( 7px );
@@ -856,6 +870,10 @@ input[type="checkbox"]:checked + label > span:before {
     color: #fff;
     cursor: default;
     margin-top: 10px;
+  }
+
+  .expanded-weather h2{
+    font-size: 24px !important;
   }
   
   #locationInput{
