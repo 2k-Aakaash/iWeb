@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('confirm-delete-button').addEventListener('click', confirmDelete);
   document.getElementById('addBookmarkButton').addEventListener('click', addBookmark);
   loadBookmarks();
+  loadFavoriteLinks();
 });
 
 function showBox() {
@@ -38,7 +39,7 @@ function addBookmark() {
         bookmarkInput = "https://" + parsedDomain;
     }
 
-  var websiteName = getWebsiteName(bookmarkInput);
+  var websiteName = capitalizeWords(getWebsiteName(bookmarkInput));
   var newBookmark = document.createElement('a');
   newBookmark.href = bookmarkInput;
   newBookmark.textContent = websiteName;
@@ -64,11 +65,34 @@ function addBookmark() {
   saveBookmarkToLocalStorage(bookmarkData);
 
   document.getElementById('bookmark-input').value = '';
+
+  // Add to favorite links bar
+  addBookmarkToFavoriteBar(bookmarkData);
+}
+
+
+function addBookmarkToFavoriteBar(bookmarkData) {
+  var favoriteBar = document.getElementById('favorite-links-bar');
+  var favoriteLink = document.createElement('a');
+  favoriteLink.href = bookmarkData.url;
+  favoriteLink.className = 'favorite-link';
+  favoriteLink.target = '_blank';
+
+  var favoriteFavicon = document.createElement('img');
+  favoriteFavicon.src = bookmarkData.favicon;
+  favoriteFavicon.alt = 'Favicon';
+
+  var favoriteName = document.createElement('div');
+  favoriteName.textContent = bookmarkData.websiteName;
+
+  favoriteLink.appendChild(favoriteFavicon);
+  favoriteLink.appendChild(favoriteName);
+  favoriteBar.appendChild(favoriteLink);
 }
 
 document.getElementById('bookmark-input').addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
-    event.preventDefault(); // Prevent the default behavior of the Enter key
+    event.preventDefault();
     addBookmark();
   }
 });
@@ -84,6 +108,12 @@ function getWebsiteName(url) {
   var parser = new URL(url);
   var websiteName = parser.hostname;
   return websiteName.replace(/^www\.|\.com$/g, '');
+}
+
+function capitalizeWords(str) {
+  return str.replace(/\b\w/g, function(char) {
+    return char.toUpperCase();
+  });
 }
 
 function saveBookmarkToLocalStorage(bookmarkData) {
@@ -108,7 +138,7 @@ function loadBookmarks() {
 
     var newBookmark = document.createElement('a');
     newBookmark.href = bookmarkData.url;
-    newBookmark.textContent = bookmarkData.websiteName;
+    newBookmark.textContent = capitalizeWords(bookmarkData.websiteName);
     newBookmark.target = '_blank';
 
     newBookmarkContainer.appendChild(newFavicon);
@@ -118,9 +148,15 @@ function loadBookmarks() {
   }
 }
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   loadBookmarks();
-// });
+function loadFavoriteLinks() {
+  var bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  var favoriteBar = document.getElementById('favorite-links-bar');
+  favoriteBar.innerHTML = '';
+
+  bookmarks.forEach(bookmark => {
+    addBookmarkToFavoriteBar(bookmark);
+  });
+}
 
 function closeLinksBox() {
   const linksBox = document.getElementById("box");
@@ -132,7 +168,6 @@ function openWebsite(url) {
   window.open(url, '_blank');
 }
 
-// Add this function to attach click event listeners to the bookmark containers
 function attachClickEventListenersToBookmarks() {
   const bookmarkContainers = document.querySelectorAll('.bookmark-container');
   bookmarkContainers.forEach((container) => {
@@ -163,8 +198,6 @@ document.addEventListener("click", function(event) {
     closeCustomizationBox();
   }
 });
-
-
 
 // Add this function to add the equals symbol to each link
 function addEqualsSymbolToLinks() {
@@ -261,12 +294,6 @@ function handleDragStart(event) {
   event.dataTransfer.setData('text/plain', ''); // Necessary for Firefox to allow drag
   event.target.style.transform = 'scale(1.2)';
   event.target.classList.add('dragged'); // Add a class for styling
-
-  //  // Add the "=" symbol to the left of the dragged bookmark
-  //  const equalsSymbol = document.createElement('span');
-  //  equalsSymbol.textContent = '=';
-  //  equalsSymbol.className = 'equals-symbol';
-  //  draggedBookmark.insertBefore(equalsSymbol, draggedBookmark.firstChild);
 }
 
 function handleDragEnd(event) {
@@ -296,8 +323,6 @@ function updateBookmarkOrder() {
   attachClickEventListenersToBookmarks(); // Attach click event listeners to existing bookmarks
 }
 
-
-
 function loadBookmarks() {
   var bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
   var linksTextContainer = document.querySelector('.links-text-container');
@@ -326,3 +351,50 @@ function loadBookmarks() {
     linksTextContainer.appendChild(newBookmarkContainer);
   }
 }
+
+function toggleDeleteMode() {
+  var deleteMode = document.body.classList.toggle('delete-mode');
+  var deleteButtons = document.querySelectorAll('.delete-button');
+  deleteButtons.forEach(button => button.style.display = deleteMode ? 'block' : 'none');
+}
+
+function confirmDelete() {
+  if (!confirm('Are you sure you want to delete the selected bookmarks?')) return;
+
+  var bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  var selectedBookmarks = document.querySelectorAll('.bookmark-container input[type="checkbox"]:checked');
+  var urlsToDelete = Array.from(selectedBookmarks).map(input => input.dataset.url);
+
+  bookmarks = bookmarks.filter(bookmark => !urlsToDelete.includes(bookmark.url));
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+  loadBookmarks();
+  loadFavoriteLinks();
+}
+
+function attachDeleteButtons() {
+  var bookmarkContainers = document.querySelectorAll('.bookmark-container');
+  bookmarkContainers.forEach(container => {
+    var deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete-button');
+    deleteButton.style.display = 'none';
+
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.url = container.querySelector('a').href;
+
+    container.appendChild(checkbox);
+    container.appendChild(deleteButton);
+    deleteButton.addEventListener('click', function() {
+      var bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+      bookmarks = bookmarks.filter(bookmark => bookmark.url !== checkbox.dataset.url);
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+      loadBookmarks();
+      loadFavoriteLinks();
+    });
+  });
+}
+
+
