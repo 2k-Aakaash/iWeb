@@ -9,7 +9,7 @@
     <link rel="icon" href="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" type="image/svg+xml">
 
     <!--CDN Script tag-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vibrant.js/1.0.0/Vibrant.min.js" integrity="sha512-V6rhYmJy8NZQF8F0bhJiTM0iI6wX/FKJoWvYrCM15UIeb6p38HjvTZWfO0IxJnMZrHWUJZJqLuWK0zslra2FVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/vibrant.js"></script>
 
     <!--Link Elements of Stylesheets-->
     <link rel="stylesheet" href="styles/style.css">
@@ -25,20 +25,24 @@
 
 <div class="container">
   <div class="time-container">
-  <div class="center">
-    <span id="clock" id="text" class="clock-time"></span>
-    <!-- style="text-shadow: 1px 1.5px rgba(0, 0, 0, 0.434);" -->
-    <p class="name-intro type-animation animating"><span id="quote"></span><span id="custom-name"></span>!</p>
-    <!-- <button id="change-quote-button">Change Quote</button> -->
-  </div>
+    <div class="center">
+      <span id="clock" id="text" class="clock-time"></span>
+      <!-- style="text-shadow: 1px 1.5px rgba(0, 0, 0, 0.434);" -->
+      <p class="name-intro type-animation animating"><span id="quote"></span><span id="custom-name"></span>!</p>
+      <!-- <button id="change-quote-button">Change Quote</button> -->
+    </div>
 
-  <div class="search-container" style="margin-top: 70px;">
-    <label class="search-bar-text" id="search-label">What's your Main Focus today?</label>
-    <!-- <button id="change-search-button">Change Manually</button> -->
-    <form id="search-form">
-      <input type="text" id="search-input" autocomplete="on" autofocus="on">
-    </form>
-</div>
+    <div class="favorite-links-container">
+      <div class="favorite-links-bar" id="favorite-links-bar"></div>
+    </div>
+  
+    <div class="search-container">
+        <label class="search-bar-text" id="search-label"></label>
+        <!-- <button id="change-search-button">Change Manually</button> -->
+        <form id="search-form">
+          <input type="text" id="search-input" autocomplete="on" autofocus="on">
+        </form>
+  </div>
 </div>
 </div>
 
@@ -65,11 +69,11 @@
 </div>
 
 <div class="top-right-container">
-  <div class="weather-container">
-    <input type="text" id="locationInput">
-    <button class="get-weather">Get Weather</button>
-    <div id="weatherInfo"></div>
-</div>
+    <div class="weather-container">
+        <input type="text" id="locationInput">
+        <button class="get-weather">Get Weather</button>
+        <div id="weatherInfo"></div>
+    </div>
 </div>
 
 <div class="bottom-left-corner">
@@ -86,16 +90,15 @@
    <button id="fontButton" class="custom-font-button">Custom Font</button>
 
  <div id="fontBox" class="box-container">
-  <img src="images/svg/12.svg" class="font-option" data-font-family="new_york_extra_largeheavy">
-  <img src="images/svg/12-2.svg" class="font-option" data-font-family="SF-Pro Rails">
-  <img src="images/svg/12-1.svg" class="font-option" data-font-family="sf_pro_-_stencilregular">
-  <img src="images/svg/12-3.svg" class="font-option" data-font-family="SFProDisplay-Heavy">
+    <img src="images/svg/12.svg" class="font-option" data-font-family="new_york_extra_largeheavy">
+    <img src="images/svg/12-2.svg" class="font-option" data-font-family="SF-Pro Rails">
+    <img src="images/svg/12-1.svg" class="font-option" data-font-family="sf_pro_-_stencilregular">
+    <img src="images/svg/12-3.svg" class="font-option" data-font-family="SFProDisplay-Heavy">
 </div>
 
    <div class="input-container" id="input-container">
-    <input type="text" id="name-input" placeholder="Enter your name">
+        <input type="text" id="name-input" placeholder="Enter your name">
   </div>
-  
 </div>
 </div>
 
@@ -107,15 +110,13 @@
       <button id="close-overlay" class="close-button">×</button>
     </div>
 
-    <div class="image-grid">
-      <!-- Saved images will be displayed here -->
-    </div>
+    <div class="image-grid"></div>
 
   </div>
 </div>
 
 <div class="copyright-section">
-  <p>&copy; 2023 iWeb. All rights reserved.</p>
+  <p>&copy; 2024 iWeb. All rights reserved.</p>
 </div>
 
 <div class="notes-box">
@@ -146,6 +147,8 @@
   <script src="js/weather.js"></script>
   <script src="js/customization.js"></script>
   <script src="js/quote.js"></script>
+  <script src="js/search-bar-text.js"></script>
   <script src="js/deleteLinks.js"></script>
+  
 </body>
 </html>
