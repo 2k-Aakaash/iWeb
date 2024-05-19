@@ -1540,6 +1540,7 @@ body{
   white-space: nowrap;
   padding: 10px 0;
   margin: 20px 0 0 0;
+  margin: 0 auto;
 }
 
 .favorite-links-container::-webkit-scrollbar {
