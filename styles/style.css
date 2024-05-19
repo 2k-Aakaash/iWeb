@@ -13,8 +13,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'sf_pro_displaysemibold';
- 
-  }
+}
 
   ::placeholder{
     color: #fff;
@@ -112,7 +111,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .link-button:focus{
+  .link-button:active{
     transform: scale(0.90);
   }
   
@@ -137,7 +136,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .drag-n-drop-button:focus{
+  .drag-n-drop-button:active{
     transform: scale(0.90);
   }
   
@@ -188,6 +187,10 @@ input[type="checkbox"]:checked + label > span:before {
   text-decoration: none;
   color: #fff;
   }
+
+  .time-container{
+    padding: 70px 10px 25px 10px;
+  }
   
   .img-elems{
   width:30px;
@@ -211,6 +214,7 @@ input[type="checkbox"]:checked + label > span:before {
   font-size: 14px;
   cursor: default;
   }
+
   .clock-time{
   font-size: 70px;
   color: #ffffff;
@@ -218,7 +222,6 @@ input[type="checkbox"]:checked + label > span:before {
   justify-content: center;
   align-items: center;
   cursor: default;
-  margin-top: 100px;
   font-family: 'SFProDisplay-Heavy';
   }
   
@@ -290,6 +293,7 @@ input[type="checkbox"]:checked + label > span:before {
   
   .bookmark-container img {
     height: 20px;
+    border-radius: 5px;
   }
   
   .bookmark-container a {
@@ -377,6 +381,7 @@ input[type="checkbox"]:checked + label > span:before {
   .search-container{
     /* width: 300px; */
     margin: 0 auto;
+    margin-top: 20px;
   }
   
   #search-form{
@@ -558,12 +563,12 @@ input[type="checkbox"]:checked + label > span:before {
   cursor: default;
   }
 
-  input:focus{
+  input:active{
     outline: none;
   }
   
   .close:hover,
-  .close:focus {
+  .close:active {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -659,7 +664,7 @@ input[type="checkbox"]:checked + label > span:before {
     color: rgb(212, 28, 28);
   }
   
-  .delete-button:focus{
+  .delete-button:active{
     transform: scale(1.2);
   }
     
@@ -671,7 +676,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
 
-  .cancel-button:focus{
+  .cancel-button:active{
     transform: scale(0.90);
   }
     
@@ -696,7 +701,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  #add-note-btn:focus{
+  #add-note-btn:active{
     transform: scale(0.90);
   }
   
@@ -757,7 +762,7 @@ input[type="checkbox"]:checked + label > span:before {
       transform: scale(0.96);
     }
     
-    #drag-note-btn:focus{
+    #drag-note-btn:active{
       transform: scale(0.90);
     }
     
@@ -766,7 +771,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  #save-note-btn:focus, #delete-note-btn:focus, #edit-note-btn:focus{
+  #save-note-btn:active, #delete-note-btn:active, #edit-note-btn:active{
     transform: scale(0.90);
   }
   
@@ -792,7 +797,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .change-bg:focus{
+  .change-bg:active{
     transform: scale(0.90);
   }
   
@@ -905,7 +910,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .get-weather:focus{
+  .get-weather:active{
     transform: scale(0.90);
   }
   
@@ -940,7 +945,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .custom-button:focus{
+  .custom-button:active{
     transform: scale(0.90);
   }
   
@@ -1006,7 +1011,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .bg-button:focus{
+  .bg-button:active{
     transform: scale(0.90);
   }
   
@@ -1050,7 +1055,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .custom-font-button:focus{
+  .custom-font-button:active{
     transform: scale(0.90);
   }
 
@@ -1075,7 +1080,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .remove-bg-button:focus{
+  .remove-bg-button:active{
     transform: scale(0.90);
   }
 
@@ -1135,7 +1140,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
   
-  .custom-name-button:focus{
+  .custom-name-button:active{
     transform: scale(0.90);
   }
   
@@ -1202,7 +1207,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
 
-  #delete-links-button:focus{
+  #delete-links-button:active{
     transform: scale(0.90);
   }
 
@@ -1227,7 +1232,7 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.96);
   }
 
-  #confirm-delete-button:focus{
+  #confirm-delete-button:active{
     transform: scale(0.90);
   }
 
@@ -1402,11 +1407,11 @@ input[type="checkbox"]:checked + label > span:before {
   transform: scale(0.96);
 }
 
-.delete-button:focus{
+.delete-button:active{
   transform: scale(0.90);
 }
 
-.close-button:focus{
+.close-button:active{
   transform: scale(0.90);
 }
 
@@ -1527,4 +1532,54 @@ input[type="checkbox"]:checked + label > span:before {
 
 body{
   overflow-y: hidden;
+}
+
+.favorite-links-container {
+  width: 300px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+  margin: 20px 0 0 0;
+}
+
+.favorite-links-container::-webkit-scrollbar {
+  display: none;
+}
+
+.favorite-links-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.favorite-links-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.favorite-link {
+  display: inline-block;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.favorite-link img {
+  display: block;
+  margin: 0 auto;
+  width: 32px;
+  height: 32px;
+}
+
+.favorite-links-bar a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.favorite-links-bar a img{
+  border-radius: 10px;
+}
+
+.favorite-links-bar a div{
+  font-size: 12px;
+  margin-top: 10px;
 }
