@@ -46,7 +46,7 @@ function addBookmark() {
   newBookmark.target = '_blank';
 
   var newFavicon = document.createElement('img');
-  newFavicon.src = 'https://s2.googleusercontent.com/s2/favicons?domain=' + bookmarkInput;
+  newFavicon.src = 'https://s2.googleusercontent.com/s2/favicons?domain=' + bookmarkInput + '&sz=128';
   newFavicon.alt = 'Favicon';
 
   var newBookmarkContainer = document.createElement('div');
@@ -398,3 +398,65 @@ function attachDeleteButtons() {
 }
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('favorite-links-container');
+  var bar = document.getElementById('favorite-links-bar');
+  var isMouseDown = false;
+  var startX;
+  var scrollLeft;
+
+  container.addEventListener('mousedown', function(e) {
+    isMouseDown = true;
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    container.style.cursor = 'grabbing'; /* Cursor changes to grabbing on click */
+  });
+
+  container.addEventListener('mouseup', function(e) {
+    isMouseDown = false;
+    container.style.cursor = 'grab'; /* Cursor changes back to grab on release */
+  });
+
+  container.addEventListener('mouseleave', function(e) {
+    isMouseDown = false;
+    container.style.cursor = 'grab'; /* Cursor changes back to grab if mouse leaves container */
+  });
+
+  container.addEventListener('mousemove', function(e) {
+    if (!isMouseDown) return;
+    e.preventDefault();
+    var x = e.pageX - container.offsetLeft;
+    var walk = (x - startX) * 2; // Adjust the scroll speed
+    container.scrollLeft = scrollLeft - walk;
+  });
+});
+
+const container = document.querySelector('.favorite-links-container');
+  let targetScrollLeft = container.scrollLeft;
+  let isAnimating = false;
+
+  function smoothScroll() {
+    const distance = targetScrollLeft - container.scrollLeft;
+    if (Math.abs(distance) < 1) {
+      isAnimating = false;
+      return;
+    }
+
+    container.scrollLeft += distance * 0.2; // easing factor (adjust for smoothness)
+    requestAnimationFrame(smoothScroll);
+  }
+
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+
+    // Update target scroll left based on vertical scroll delta
+    targetScrollLeft += e.deltaY;
+
+    // Clamp targetScrollLeft within scroll bounds
+    targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - container.clientWidth));
+
+    if (!isAnimating) {
+      isAnimating = true;
+      requestAnimationFrame(smoothScroll);
+    }
+  });

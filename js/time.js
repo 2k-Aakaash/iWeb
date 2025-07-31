@@ -17,11 +17,8 @@ function formatTime(date) {
   const formattedTime = formatTime(currentTime);
   clockElement.textContent = formattedTime;
   }
-  
-  // Display current time on page load
-  window.addEventListener('load', () => {
+
   updateClock();
-  });
-  
+
   // Call the updateClock function every minute
   setInterval(updateClock, 1000);

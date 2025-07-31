@@ -1,0 +1,20 @@
+{
+    "name": "iWeb - Individualized Web Interface",
+    "short_name": "iWeb",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#317EFB",
+    "icons": [
+        {
+            "src": "images/png/iWeb Logo 128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "images/png/iWeb Logo 48.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        }
+    ]
+}

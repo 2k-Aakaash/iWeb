@@ -1535,12 +1535,13 @@ body{
 }
 
 .favorite-links-container {
-  width: 300px;
+  width: 450px;
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px 0;
   margin: 20px 0 0 0;
   margin: 0 auto;
+  display: inline-flex;
 }
 
 .favorite-links-container::-webkit-scrollbar {
@@ -1567,8 +1568,8 @@ body{
 .favorite-link img {
   display: block;
   margin: 0 auto;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .favorite-links-bar a{
