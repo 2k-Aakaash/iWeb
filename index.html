@@ -29,7 +29,7 @@
 <div class="container">
   <div class="time-container">
     <div class="center">
-      <span id="clock" id="text" class="clock-time"></span>
+      <span id="clock" class="clock-time"></span>
       <!-- style="text-shadow: 1px 1.5px rgba(0, 0, 0, 0.434);" -->
       <p class="name-intro type-animation animating"><span id="quote"></span><span id="custom-name"></span>!</p>
       <!-- <button id="change-quote-button">Change Quote</button> -->
@@ -122,8 +122,85 @@
   </div>
 </div>
 
-<div class="copyright-section">
-  <p>&copy; 2025 iWeb. All rights reserved.</p>
+<!-- Bottom Center Music Player -->
+<div class="bottom-music-player">
+  <!-- Top Row: Cover Art, Info, and Waves -->
+  <div class="music-top-row">
+    <div class="music-info-left">
+      <img id="music-mini-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork" title="Click to open Library">
+      <div class="music-text-details" title="Click to open Library">
+        <div id="music-mini-title">No Track Selected</div>
+        <div id="music-mini-artist">Select a folder to start</div>
+      </div>
+    </div>
+    
+    <!-- Smooth Apple-style waves indicator -->
+    <div class="music-wave" id="music-wave-indicator">
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+    </div>
+  </div>
+  
+  <!-- Middle Row: Seek Slider and Times -->
+  <div class="music-middle-row">
+    <span id="music-mini-time-elapsed">0:00</span>
+    <div class="slider-wrapper">
+      <input type="range" id="music-mini-progress" min="0" max="100" value="0" step="0.1">
+    </div>
+    <span id="music-mini-time-remaining">0:00</span>
+  </div>
+  
+  <!-- Bottom Row: Star, Playback, and Output Device -->
+  <div class="music-bottom-row">
+    <button id="music-btn-star" class="music-action-btn" title="Add to Favorites">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
+    
+    <div class="music-playback-controls">
+      <button id="music-mini-prev" class="music-action-btn" title="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+      </button>
+      <button id="music-mini-play" class="music-action-btn play-btn" title="Play/Pause">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button id="music-mini-next" class="music-action-btn" title="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 6v12l8.5-6L13 6zm-.5 6L4 6v12l8.5-6z"/></svg>
+      </button>
+    </div>
+    
+    <button id="music-mini-output-device" class="music-action-btn" title="Output Audio Source">
+      <!-- Icon will be set dynamically via JS -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Music Player Library Modal -->
+<div id="music-player-modal" class="remove-bg-window">
+  <div class="remove-bg-content">
+    <div class="navbar">
+      <p class="navbar-text">Music Library 🎵</p>
+      <div style="display: flex; gap: 10px;">
+        <button id="music-modal-select-folder" class="close-button" style="width: auto; padding: 0 15px;">Select Folder</button>
+        <button id="music-modal-rescan" class="close-button" style="width: auto; padding: 0 15px; display: none;">Rescan</button>
+        <button id="music-modal-shuffle" class="close-button" style="width: auto; padding: 0 15px;">Shuffle: Off</button>
+        <button id="music-modal-repeat" class="close-button" style="width: auto; padding: 0 15px;">Repeat: Off</button>
+      </div>
+      <button id="close-music-player-modal" class="close-button">×</button>
+    </div>
+
+    <div class="music-modal-body" style="padding: 15px; color: white;">
+      <div id="music-modal-status" style="margin-bottom: 15px; font-family: 'SFRounded-Semibold'; color: rgba(255,255,255,0.7);">
+        No folder selected.
+      </div>
+      <div class="music-track-list" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+        <!-- Track rows will be inserted here dynamically -->
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="notes-box">
@@ -152,6 +229,8 @@
   <script src="js/search.js"></script>
   <script src="js/note.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script type="module" src="js/music.js"></script>
   <script src="js/weather.js"></script>
   <script src="js/customization.js"></script>
   <script src="js/quote.js"></script>

@@ -193,6 +193,25 @@ function loadAndInitImages() {
       }
     });
     console.log("Loaded " + backgroundImages.length + " background images from IndexedDB.");
+
+    // Restore last used background!
+    var lastIdStr = localStorage.getItem('lastUsedBackgroundId');
+    var idx = -1;
+    if (lastIdStr && backgroundDbIds.length > 0) {
+      var lastId = parseInt(lastIdStr);
+      idx = backgroundDbIds.indexOf(lastId);
+    }
+    if (idx === -1 && backgroundImages.length > 0) {
+      idx = 0;
+      var activeId = backgroundDbIds[0];
+      if (activeId !== undefined) {
+        localStorage.setItem('lastUsedBackgroundId', activeId);
+      }
+    }
+    if (idx >= 0) {
+      currentIndex = idx;
+      setBackgroundAndTextColor(backgroundImages[currentIndex]);
+    }
   });
 }
 
@@ -205,8 +224,9 @@ var transitionDuration = 200; // 500 milliseconds
 
 function extractAverageColor(imagePath) {
   var image = new Image();
-  image.src = imagePath;
-  image.crossOrigin = 'anonymous';
+  if (imagePath && !imagePath.startsWith('blob:') && !imagePath.startsWith('data:')) {
+    image.crossOrigin = 'anonymous';
+  }
   image.onload = function() {
     var vibrant = new Vibrant(image);
     var swatches = vibrant.swatches();
@@ -221,7 +241,11 @@ function extractAverageColor(imagePath) {
         element.style.color = textColor;
       });
     }
-  }
+  };
+  image.onerror = function(e) {
+    console.error("Failed to load image for color extraction:", imagePath, e);
+  };
+  image.src = imagePath;
 }
 
 function setBackgroundAndTextColor(imagePath) {
@@ -245,8 +269,14 @@ function changeBackground(timestamp) {
 
 
 function changeBackgroundManually() {
+  if (backgroundImages.length === 0) return;
   currentIndex = (currentIndex + 1) % backgroundImages.length;
   setBackgroundAndTextColor(backgroundImages[currentIndex]);
+  
+  var dbId = backgroundDbIds[currentIndex];
+  if (dbId !== undefined) {
+    localStorage.setItem('lastUsedBackgroundId', dbId);
+  }
 }
 
 // Function to open the Remove BG overlay window
@@ -364,6 +394,23 @@ function showDeleteConfirmation() {
       var imageGrid = document.querySelector('.image-grid');
       if (imageGrid) {
         imageGrid.innerHTML = getSavedImagesHTML();
+      }
+
+      // If active background was deleted, reset background or clamp index
+      if (backgroundImages.length === 0) {
+        localStorage.removeItem('lastUsedBackgroundId');
+        document.body.style.backgroundImage = '';
+        var clock = document.getElementById('clock');
+        if (clock) clock.style.color = '';
+      } else {
+        if (currentIndex >= backgroundImages.length) {
+          currentIndex = 0;
+        }
+        setBackgroundAndTextColor(backgroundImages[currentIndex]);
+        var activeId = backgroundDbIds[currentIndex];
+        if (activeId !== undefined) {
+          localStorage.setItem('lastUsedBackgroundId', activeId);
+        }
       }
     });
   }

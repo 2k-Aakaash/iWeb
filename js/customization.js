@@ -21,13 +21,13 @@ function showFileInput() {
             return;
           }
           var imageUrl = URL.createObjectURL(file);
-          // Add the image URL and DB ID to the arrays
           backgroundImages.push(imageUrl);
           backgroundDbIds.push(id);
-          // If this is the first custom image, start the animation loop
-          if (backgroundImages.length === 1) {
-            requestAnimationFrame(changeBackground);
-          }
+          
+          // Set as active background immediately and save state
+          currentIndex = backgroundImages.length - 1;
+          setBackgroundAndTextColor(imageUrl);
+          localStorage.setItem('lastUsedBackgroundId', id);
         });
       } else {
         alert('Invalid file format. Please select an image (jpg, jpeg, png, or gif).');
