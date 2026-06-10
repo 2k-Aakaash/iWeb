@@ -2,10 +2,202 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('.change-bg').addEventListener('click', changeBackgroundManually);
 })
 
-var backgroundImages = [
-  // Here where the BG image are stored and goes for interval
-];
-var backgroundImages = JSON.parse(localStorage.getItem('backgroundImages')) || [];
+var backgroundImages = [];
+var backgroundDbIds = [];
+
+// IndexedDB configuration
+var dbName = "iWebDB";
+var dbVersion = 1;
+var storeName = "background_images";
+var db = null;
+
+// Initialize IndexedDB
+function initDB(callback) {
+  var request = indexedDB.open(dbName, dbVersion);
+
+  request.onerror = function(event) {
+    console.error("IndexedDB error:", event.target.error);
+    if (callback) callback(event.target.error);
+  };
+
+  request.onsuccess = function(event) {
+    db = event.target.result;
+    if (callback) callback(null, db);
+  };
+
+  request.onupgradeneeded = function(event) {
+    var dbInstance = event.target.result;
+    if (!dbInstance.objectStoreNames.contains(storeName)) {
+      dbInstance.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+    }
+  };
+}
+
+// Save blob to IndexedDB
+function saveImageToDB(blob, callback) {
+  if (!db) {
+    console.error("Database not initialized");
+    if (callback) callback(new Error("Database not initialized"));
+    return;
+  }
+  var transaction = db.transaction([storeName], "readwrite");
+  var store = transaction.objectStore(storeName);
+  var request = store.add({ blob: blob });
+
+  request.onsuccess = function(event) {
+    if (callback) callback(null, event.target.result);
+  };
+
+  request.onerror = function(event) {
+    console.error("Error saving image to DB:", event.target.error);
+    if (callback) callback(event.target.error);
+  };
+}
+
+// Load all background records from IndexedDB
+function loadImagesFromDB(callback) {
+  if (!db) {
+    console.error("Database not initialized");
+    if (callback) callback(new Error("Database not initialized"));
+    return;
+  }
+  var transaction = db.transaction([storeName], "readonly");
+  var store = transaction.objectStore(storeName);
+  var request = store.getAll();
+
+  request.onsuccess = function(event) {
+    if (callback) callback(null, event.target.result);
+  };
+
+  request.onerror = function(event) {
+    console.error("Error loading images from DB:", event.target.error);
+    if (callback) callback(event.target.error);
+  };
+}
+
+// Delete background records by ID
+function deleteImagesFromDB(ids, callback) {
+  if (!db) {
+    console.error("Database not initialized");
+    if (callback) callback(new Error("Database not initialized"));
+    return;
+  }
+  var transaction = db.transaction([storeName], "readwrite");
+  var store = transaction.objectStore(storeName);
+
+  ids.forEach(function(id) {
+    store.delete(id);
+  });
+
+  transaction.oncomplete = function() {
+    if (callback) callback(null);
+  };
+
+  transaction.onerror = function(event) {
+    console.error("Error deleting images from DB:", event.target.error);
+    if (callback) callback(event.target.error);
+  };
+}
+
+// Convert legacy base64 Data URLs to Blobs for migration
+function dataURLtoBlob(dataurl) {
+  try {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+  } catch (e) {
+    console.error("Failed to convert dataURL to Blob", e);
+    return null;
+  }
+}
+
+// Check and perform migration from localStorage to IndexedDB
+function initBackgrounds() {
+  initDB(function(err) {
+    if (err) return;
+
+    var legacyData = localStorage.getItem('backgroundImages');
+    if (legacyData) {
+      try {
+        var legacyImages = JSON.parse(legacyData);
+        if (Array.isArray(legacyImages) && legacyImages.length > 0) {
+          console.log("Migrating " + legacyImages.length + " background images to IndexedDB...");
+          
+          var transaction = db.transaction([storeName], "readwrite");
+          var store = transaction.objectStore(storeName);
+          var migratedCount = 0;
+          var totalToMigrate = legacyImages.length;
+          
+          legacyImages.forEach(function(dataurl) {
+            var blob = dataURLtoBlob(dataurl);
+            if (blob) {
+              var request = store.add({ blob: blob });
+              request.onsuccess = function() {
+                migratedCount++;
+                if (migratedCount === totalToMigrate) {
+                  console.log("Migration complete!");
+                  localStorage.removeItem('backgroundImages');
+                  loadAndInitImages();
+                }
+              };
+              request.onerror = function() {
+                migratedCount++;
+                if (migratedCount === totalToMigrate) {
+                  localStorage.removeItem('backgroundImages');
+                  loadAndInitImages();
+                }
+              };
+            } else {
+              migratedCount++;
+              if (migratedCount === totalToMigrate) {
+                localStorage.removeItem('backgroundImages');
+                loadAndInitImages();
+              }
+            }
+          });
+          return;
+        }
+      } catch (e) {
+        console.error("Failed parsing legacy backgrounds", e);
+      }
+      localStorage.removeItem('backgroundImages');
+    }
+
+    loadAndInitImages();
+  });
+}
+
+// Load images into memory and create Object URLs
+function loadAndInitImages() {
+  loadImagesFromDB(function(err, records) {
+    if (err || !records) return;
+    
+    // Revoke old object URLs to avoid memory leaks
+    backgroundImages.forEach(function(url) {
+      if (url && url.startsWith('blob:')) {
+        URL.revokeObjectURL(url);
+      }
+    });
+
+    backgroundImages = [];
+    backgroundDbIds = [];
+
+    records.forEach(function(record) {
+      if (record.blob) {
+        var url = URL.createObjectURL(record.blob);
+        backgroundImages.push(url);
+        backgroundDbIds.push(record.id);
+      }
+    });
+    console.log("Loaded " + backgroundImages.length + " background images from IndexedDB.");
+  });
+}
+
+// Call initialization
+initBackgrounds();
 var currentIndex = 0;
 var isTransitioning = false;
 var transitionDuration = 200; // 500 milliseconds
@@ -133,7 +325,7 @@ function closeRemoveBGWindow() {
 // Function to show the delete confirmation dialog
 function showDeleteConfirmation() {
   var selectedImages = [];
-  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  var checkboxes = document.querySelectorAll('.image-grid input[type="checkbox"]');
   
   for (var i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
@@ -149,19 +341,31 @@ function showDeleteConfirmation() {
   var confirmDelete = confirm("Are you sure you want to delete selected images that won't be retrieved in the future?");
 
   if (confirmDelete) {
-    // Delete selected images from local storage
+    var idsToDelete = [];
+    // Delete selected images from IndexedDB and local arrays
     for (var i = selectedImages.length - 1; i >= 0; i--) {
-      backgroundImages.splice(selectedImages[i], 1);
+      var index = selectedImages[i];
+      var dbId = backgroundDbIds[index];
+      if (dbId !== undefined) {
+        idsToDelete.push(dbId);
+      }
+      if (backgroundImages[index] && backgroundImages[index].startsWith('blob:')) {
+        URL.revokeObjectURL(backgroundImages[index]);
+      }
+      backgroundImages.splice(index, 1);
+      backgroundDbIds.splice(index, 1);
     }
-    // Save the updated array to local storage
-    localStorage.setItem('backgroundImages', JSON.stringify(backgroundImages));
     
-    // Close the Remove BG overlay
-    closeRemoveBGWindow();
+    deleteImagesFromDB(idsToDelete, function(err) {
+      // Close the Remove BG overlay
+      closeRemoveBGWindow();
 
-    // After deleting, you can repopulate the image grid
-    var imageGrid = document.getElementById('image-grid');
-    imageGrid.innerHTML = getSavedImagesHTML();
+      // After deleting, you can repopulate the image grid using the correct class selector
+      var imageGrid = document.querySelector('.image-grid');
+      if (imageGrid) {
+        imageGrid.innerHTML = getSavedImagesHTML();
+      }
+    });
   }
 }
 

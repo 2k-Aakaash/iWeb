@@ -14,19 +14,21 @@ function showFileInput() {
     if (file) {
       // Check if the selected file is an image (jpg, jpeg, png, or gif)
       if (file.type.match('image/jpeg') || file.type.match('image/png') || file.type.match('image/gif')) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var imageUrl = e.target.result;
-          // Add the image URL to the backgroundImages array
+        // Save the file (blob) directly to IndexedDB
+        saveImageToDB(file, function(err, id) {
+          if (err) {
+            alert('Failed to save background image: ' + err.message);
+            return;
+          }
+          var imageUrl = URL.createObjectURL(file);
+          // Add the image URL and DB ID to the arrays
           backgroundImages.push(imageUrl);
-          // Save the updated array to local storage
-          localStorage.setItem('backgroundImages', JSON.stringify(backgroundImages));
+          backgroundDbIds.push(id);
           // If this is the first custom image, start the animation loop
           if (backgroundImages.length === 1) {
             requestAnimationFrame(changeBackground);
           }
-        };
-        reader.readAsDataURL(file);
+        });
       } else {
         alert('Invalid file format. Please select an image (jpg, jpeg, png, or gif).');
       }

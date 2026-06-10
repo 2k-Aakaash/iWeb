@@ -801,124 +801,258 @@ input[type="checkbox"]:checked + label > span:before {
     transform: scale(0.90);
   }
   
-  .mini-weather{
-    border-radius: 30px;
-    font-size: 16px !important;
-    background-color: lightcoral;
-    width: 150px;
-    display: flex;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
-    z-index: 9999;
-    background: rgba( 255, 255, 255, 0.2 );
-    box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.37);
-    backdrop-filter: blur( 7px );
-    -webkit-backdrop-filter: blur( 7px );
-    border-radius: 10px;
-    border: 1px solid rgb(255, 255, 255);
-    color: #fff;
-    position: fixed;
-    right: 50px;
-    cursor: default;
-    margin-top: 10px;
-  }
-  
-  input:focus{
-    outline: none;
-  }
-  
-  .expand-button {
-    background: rgba( 255, 255, 255, 0.2 );
-    backdrop-filter: blur( 7px );
-    -webkit-backdrop-filter: blur( 7px );
-    border-radius: 10px;
-    border:none;
-    font-size: 15px;
-    font-family: 'SFRounded-Semibold';
-    color: #ffffff;
-    width: 40px;
-    height: 30px;
-    transition: transform 0.1s ease-in;
-    position: fixed;
-    right: 5px;
-    margin-top: 20px;
-  }
-  
-  .collapse-button {
-    background: rgba( 255, 255, 255, 0.2 );
-    backdrop-filter: blur( 7px );
-    -webkit-backdrop-filter: blur( 7px );
-    border-radius: 10px;
-    border:none;
-    font-size: 15px;
-    font-family: 'SFRounded-Semibold';
-    color: #ffffff;
-    width: 40px;
-    height: 30px;
-    transition: transform 0.1s ease-in;
-  }
-  
-  .expanded-weather{
-    width: 300px;
-    z-index: 9999;
-    font-size: 16px !important;
-    background: rgba( 255, 255, 255, 0.2 );
-    backdrop-filter: blur( 7px );
-    -webkit-backdrop-filter: blur( 7px );
-    border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-    cursor: default;
-    margin-top: 10px;
-  }
-
-  .expanded-weather h2{
-    font-size: 24px !important;
-  }
-  
-  #locationInput{
-    border: none;
-    border-bottom: 2px solid white;
-    outline: none;
-    background-color: transparent;
-    color: #fff;
-    font-size: 16px;
-    width: 100px;
-  }
-  
-  .get-weather{
-    background: rgba( 255, 255, 255, 0.2 );
-    backdrop-filter: blur( 7px );
-    -webkit-backdrop-filter: blur( 7px );
-    border-radius: 10px;
-    border:none;
-    height: 30px;
-    width: 110px;
-    font-size: 15px;
-    font-family: 'SFRounded-Semibold';
-    color: #ffffff;
-    margin-right: 10px;
-    transition: transform 0.1s ease-in;
-  }
-  
-  .get-weather:hover{
-    transform: scale(0.96);
-  }
-  
-  .get-weather:active{
-    transform: scale(0.90);
-  }
-  
+  /* Weather Card Styles */
   .top-right-container {
     position: fixed;
-    top: 0;
-    right: 0;
-    margin-top: -10px;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+  }
+
+  .weather-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(61, 62, 76, 0.3);
+    padding: 12px;
+    width: 150px;
+    height: 150px;
+    color: white;
+    /* background handled by JS gradient; only hover shadow transitions via CSS */
+    transition: box-shadow 0.2s ease;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* GPU-hint so browser pre-composites this layer before GSAP touches it */
+    will-change: width, height, transform;
+  }
+
+  /* Interactive card states when collapsed */
+  .weather-container:not(.expanded) {
+    cursor: pointer;
+  }
+
+  .weather-container:not(.expanded):hover {
+    transform: scale(1.02);
+    background-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 12px 40px 0 rgba(61, 62, 76, 0.4);
+  }
+
+  .weather-container:not(.expanded):active {
+    transform: scale(0.97);
+  }
+
+  #weatherInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .weather-search {
+    display: none;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: border-color 0.2s, background-color 0.2s;
+    will-change: opacity, height;
+  }
+
+  .weather-search:focus-within {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .weather-search input {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    flex: 1;
+    min-width: 0;
+    outline: none;
+    font-family: 'sf_pro_displaysemibold', sans-serif;
+  }
+
+  .weather-search input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .weather-search button.get-weather {
+    border: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, opacity 0.2s;
+    height: auto;
+    width: auto;
+    margin: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 0;
+    flex-shrink: 0;
+  }
+
+  .weather-search button.get-weather:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+
+  .weather-search button.get-weather:active {
+    transform: scale(0.9);
+  }
+
+  .weather-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  .weather-info-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+  }
+
+  /* Collapsed vertical stack (London style) layout overrides when NOT expanded */
+  .weather-container:not(.expanded) .weather-info-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    text-align: left;
+  }
+
+  .weather-container:not(.expanded) .weather-info-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    width: 100%;
+  }
+
+  .weather-container:not(.expanded) .weather-info-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: auto;
+    width: 100%;
+    text-align: left;
+  }
+
+  .weather-container:not(.expanded) .weather-location {
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 100%;
+    margin-bottom: 2px;
+  }
+
+  .weather-container:not(.expanded) .weather-temp {
+    font-size: 32px;
+    line-height: 1;
+    margin-top: 0;
+  }
+
+  .weather-container:not(.expanded) .weather-condition-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    margin-right: 0;
+  }
+
+  .weather-container:not(.expanded) .weather-condition-text {
+    font-size: 11px;
+    margin-bottom: 2px;
+    max-width: 100%;
+  }
+
+  .weather-container:not(.expanded) .weather-hl-temp {
+    font-size: 10px;
+    margin-top: 0;
+  }
+
+  .weather-divider {
+    display: none;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 12px 0 8px 0;
+  }
+
+  .weather-forecast-container {
+    display: none;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 4px 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    will-change: opacity, height;
+  }
+
+  .weather-forecast-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 44px;
+    text-align: center;
+  }
+
+  .forecast-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: 'sf_pro_displaysemibold', sans-serif;
+  }
+
+  .forecast-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1));
+  }
+
+  .forecast-temp {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    font-family: 'sf_pro_displaysemibold', sans-serif;
+  }
+
+  .weather-error {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    font-family: 'sf_pro_displaysemibold', sans-serif;
+    text-align: center;
+    padding: 10px 0;
   }
   
   button:focus{
@@ -1450,19 +1584,6 @@ input[type="checkbox"]:checked + label > span:before {
     font-size: 90%;
   }
 
-  .mini-weather{
-    width: 25%;
-  }
-
-  .mini-location{
-    font-size: 80%;
-  }
-  
-  .expanded-weather{
-    width: 250px;
-    font-size: 14px;
-  }
-
   .copyright-section{
     width: 20%;
     font-size: 20%;
@@ -1470,29 +1591,71 @@ input[type="checkbox"]:checked + label > span:before {
   }
 }
 
-@media screen and (max-width: 440px) {
-
-  .weather-container{
-    width: 200px;
-    margin-top: 20px;
+@media screen and (max-width: 480px) {
+  .top-right-container {
     position: fixed;
-    right: -30px;
-  }
-
-  .expanded-weather{
-    position: fixed;
+    top: 10px;
     right: 10px;
+    left: 10px;
+    margin: 0;
   }
 
+  .weather-container {
+    width: auto;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .weather-location {
+    font-size: 18px;
+  }
+
+  .weather-temp {
+    font-size: 44px;
+  }
+
+  .weather-condition-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .weather-condition-text {
+    font-size: 13px;
+  }
+
+  .weather-hl-temp {
+    font-size: 11px;
+  }
+
+  .weather-forecast-container {
+    gap: 12px;
+  }
+
+  .forecast-item {
+    min-width: 38px;
+  }
+
+  .forecast-time {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+
+  .forecast-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+  }
+
+  .forecast-temp {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 440px) {
   .change-bg{
     position: fixed;
     left: 10px;
     top: 40px;
-  }
-
-  .collapse-button{
-    margin-top: 185px;
-    margin-left: 80px;
   }
 }
 

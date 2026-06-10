@@ -73,8 +73,12 @@
 
 <div class="top-right-container">
     <div class="weather-container">
-        <input type="text" id="locationInput">
-        <button class="get-weather">Get Weather</button>
+        <div class="weather-search">
+            <input type="text" id="locationInput" placeholder="Search city..." autocomplete="off">
+            <button class="get-weather">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+        </div>
         <div id="weatherInfo"></div>
     </div>
 </div>
@@ -147,6 +151,7 @@
   <script src="js/date.js"></script>
   <script src="js/search.js"></script>
   <script src="js/note.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="js/weather.js"></script>
   <script src="js/customization.js"></script>
   <script src="js/quote.js"></script>
