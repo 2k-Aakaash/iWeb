@@ -150,6 +150,7 @@ class PlaybackService {
       src: [objectURL],
       format: [ext],
       html5: true,
+      volume: 0, // Start silent for fade-in
       onload: () => {
         if (this.onTrackChange) this.onTrackChange(track);
         if (startPos > 0) {
@@ -161,6 +162,8 @@ class PlaybackService {
       onplay: () => {
         if (this.onPlayStateChange) this.onPlayStateChange(true);
         this.startProgressTimer();
+        // Smoothly fade in to 1 whenever playback starts/resumes
+        this.sound.fade(this.sound.volume(), 1, 600);
       },
       onpause: () => {
         if (this.onPlayStateChange) this.onPlayStateChange(false);
@@ -180,6 +183,7 @@ class PlaybackService {
 
   play() {
     if (this.sound) {
+      this.sound.off('fade'); // Clear pending fade pauses
       this.sound.play();
     } else if (this.playlist.length > 0) {
       // Find active track row or play first
@@ -190,7 +194,17 @@ class PlaybackService {
 
   pause() {
     if (this.sound) {
-      this.sound.pause();
+      this.sound.off('fade'); // Clear any active fade actions
+      const currentVol = this.sound.volume();
+      this.sound.fade(currentVol, 0, 300); // Fade out to silent
+      this.sound.once('fade', () => {
+        // Only pause if the volume actually reached 0 (fade-out completed)
+        if (this.sound.volume() === 0) {
+          this.sound.pause();
+          // Do NOT reset volume to 1 here, keep it at 0 so it starts at 0 on resume!
+        }
+      });
+      
       // Save state immediately on pause
       const seek = this.sound.seek() || 0;
       const track = this.playlist[this.currentIndex];
@@ -424,6 +438,33 @@ function updateActiveTrackUI(track) {
   if (miniTitle) miniTitle.textContent = track.title;
   if (miniArtist) miniArtist.textContent = track.artist;
 
+  // Dynamic Island
+  const collapsedArt = document.getElementById('island-collapsed-art');
+  const hoveredArt = document.getElementById('island-hovered-art');
+  const expandedArt = document.getElementById('island-expanded-art');
+  
+  const hoveredTitle = document.getElementById('island-hovered-title');
+  const hoveredArtist = document.getElementById('island-hovered-artist');
+  
+  const expandedTitle = document.getElementById('island-expanded-title');
+  const expandedArtist = document.getElementById('island-expanded-artist');
+
+  if (collapsedArt) collapsedArt.src = track.artwork;
+  if (hoveredArt) hoveredArt.src = track.artwork;
+  if (expandedArt) expandedArt.src = track.artwork;
+
+  if (hoveredTitle) hoveredTitle.textContent = track.title;
+  if (hoveredArtist) hoveredArtist.textContent = track.artist;
+
+  if (expandedTitle) expandedTitle.textContent = track.title;
+  if (expandedArtist) expandedArtist.textContent = track.artist;
+
+  // Activate Dynamic Island when music is loaded
+  const island = document.getElementById('dynamic-island');
+  if (island) {
+    island.classList.add('active');
+  }
+
   // Render modal to highlight active
   renderLibraryUI();
 }
@@ -437,6 +478,14 @@ function updatePlayStateUI(isPlaying) {
       : `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
   }
 
+  // Dynamic Island Play Button
+  const islandPlay = document.getElementById('island-expanded-play');
+  if (islandPlay) {
+    islandPlay.innerHTML = isPlaying
+      ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
+      : `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+  }
+
   const waveIndicator = document.getElementById('music-wave-indicator');
   if (waveIndicator) {
     if (isPlaying) {
@@ -445,12 +494,28 @@ function updatePlayStateUI(isPlaying) {
       waveIndicator.classList.remove('playing');
     }
   }
+
+  // Dynamic Island Waveforms
+  const collapsedWave = document.getElementById('island-collapsed-waveform');
+  const hoveredWave = document.getElementById('island-hovered-waveform');
+  const expandedWave = document.getElementById('island-expanded-waveform');
+
+  [collapsedWave, hoveredWave, expandedWave].forEach(wave => {
+    if (wave) {
+      if (isPlaying) {
+        wave.classList.add('playing');
+      } else {
+        wave.classList.remove('playing');
+      }
+    }
+  });
 }
 
 // Watch the active output device (buds, headphones, speakers)
 async function updateAudioOutputIndicator() {
   const deviceIcon = document.getElementById('music-mini-output-device');
-  if (!deviceIcon) return;
+  const islandDeviceIcon = document.getElementById('island-expanded-output');
+  if (!deviceIcon && !islandDeviceIcon) return;
 
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
@@ -469,19 +534,27 @@ async function updateAudioOutputIndicator() {
       }
     }
 
-    if (isBuds) {
-      deviceIcon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-1.38 0-2.5-1.12-2.5-2.5V13c0-1.1.9-2 2-2h1V7.5c0-1.38-1.12-2.5-2.5-2.5S6.5 6.12 6.5 7.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5C5.5 5.01 7.51 3 10 3s4.5 2.01 4.5 4.5V11h1c1.1 0 2 .9 2 2v2c0 1.38-1.12 2.5-2.5 2.5h-1c-.28 0-.5-.22-.5-.5V13c0-.28-.22-.5-.5-.5h-2c-.28 0-.5.22-.5.5v4c0 .28-.22.5-.5.5h-1z"/></svg>`;
-      deviceIcon.title = "Bluetooth / Buds Output";
-    } else if (isHeadphones) {
-      deviceIcon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`;
-      deviceIcon.title = "Headphones Output";
-    } else {
-      deviceIcon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>`;
-      deviceIcon.title = "Speakers Output";
-    }
+    const setIcon = (el) => {
+      if (!el) return;
+      if (isBuds) {
+        el.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5c-1.38 0-2.5-1.12-2.5-2.5V13c0-1.1.9-2 2-2h1V7.5c0-1.38-1.12-2.5-2.5-2.5S6.5 6.12 6.5 7.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5C5.5 5.01 7.51 3 10 3s4.5 2.01 4.5 4.5V11h1c1.1 0 2 .9 2 2v2c0 1.38-1.12 2.5-2.5 2.5h-1c-.28 0-.5-.22-.5-.5V13c0-.28-.22-.5-.5-.5h-2c-.28 0-.5.22-.5.5v4c0 .28-.22.5-.5.5h-1z"/></svg>`;
+        el.title = "Bluetooth / Buds Output";
+      } else if (isHeadphones) {
+        el.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`;
+        el.title = "Headphones Output";
+      } else {
+        el.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>`;
+        el.title = "Speakers Output";
+      }
+    };
+
+    setIcon(deviceIcon);
+    setIcon(islandDeviceIcon);
   } catch (err) {
     console.error("Audio output detection error:", err);
-    deviceIcon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>`;
+    const fallback = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>`;
+    if (deviceIcon) deviceIcon.innerHTML = fallback;
+    if (islandDeviceIcon) islandDeviceIcon.innerHTML = fallback;
   }
 }
 
@@ -491,12 +564,28 @@ function updateProgressUI(seek, duration) {
   const remainingEl = document.getElementById('music-mini-time-remaining');
   const progressInput = document.getElementById('music-mini-progress');
 
+  // Dynamic Island Progress
+  const islandElapsedEl = document.getElementById('island-collapsed-elapsed');
+  const islandExpandedElapsedEl = document.getElementById('island-expanded-elapsed');
+  const islandRemainingEl = document.getElementById('island-expanded-remaining');
+  const islandProgressInput = document.getElementById('island-expanded-progress');
+
   if (elapsedEl) elapsedEl.textContent = formatTime(seek);
   if (remainingEl) remainingEl.textContent = formatTime(duration - seek);
   if (progressInput && duration > 0) {
     progressInput.value = (seek / duration) * 100;
   }
+
+  if (islandElapsedEl) islandElapsedEl.textContent = formatTime(seek);
+  if (islandExpandedElapsedEl) islandExpandedElapsedEl.textContent = formatTime(seek);
+  if (islandRemainingEl) islandRemainingEl.textContent = `-${formatTime(duration - seek)}`;
+  if (islandProgressInput && duration > 0) {
+    const pct = (seek / duration) * 100;
+    islandProgressInput.value = pct;
+    islandProgressInput.style.background = `linear-gradient(to right, #ffffff 0%, #ffffff ${pct}%, rgba(255, 255, 255, 0.16) ${pct}%, rgba(255, 255, 255, 0.16) 100%)`;
+  }
 }
+
 
 // Handle folder selection
 async function handleFolderSelection() {
@@ -731,47 +820,138 @@ document.addEventListener('DOMContentLoaded', () => {
   player.onProgressUpdate = updateProgressUI;
 
   // Mini controls
-  document.getElementById('music-mini-play').onclick = () => {
-    if (player.sound && player.sound.playing()) {
-      player.pause();
-    } else {
-      player.play();
-    }
-  };
-
-  document.getElementById('music-mini-prev').onclick = () => player.prev();
-  document.getElementById('music-mini-next').onclick = () => player.next();
-
-  // Seek bar
-  const progressInput = document.getElementById('music-mini-progress');
-  if (progressInput) {
-    // oninput updates the text UI and slider smoothly (highly responsive, 0 DB writes)
-    progressInput.oninput = (e) => {
-      if (player.currentIndex >= 0) {
-        const track = player.playlist[player.currentIndex];
-        const pct = parseFloat(e.target.value) / 100;
-        const target = track.duration * pct;
-        updateProgressUI(target, track.duration);
-      }
-    };
-
-    // onchange actually seeks the audio and saves to IndexedDB (fired once when slider is released)
-    progressInput.onchange = (e) => {
-      const pct = parseFloat(e.target.value) / 100;
-      if (player.sound) {
-        player.seek(pct);
-      } else if (player.currentIndex >= 0) {
-        const track = player.playlist[player.currentIndex];
-        const target = track.duration * pct;
-        player.pendingSeekTime = target;
-        savePlaybackState(track.id, target);
+  const miniPlay = document.getElementById('music-mini-play');
+  if (miniPlay) {
+    miniPlay.onclick = () => {
+      if (player.sound && player.sound.playing()) {
+        player.pause();
+      } else {
+        player.play();
       }
     };
   }
 
-  // Library modal toggle
+  const miniPrev = document.getElementById('music-mini-prev');
+  if (miniPrev) {
+    miniPrev.onclick = () => player.prev();
+  }
+
+  const miniNext = document.getElementById('music-mini-next');
+  if (miniNext) {
+    miniNext.onclick = () => player.next();
+  }
+
+  // Seek bar
+  const progressInput = document.getElementById('music-mini-progress');
+  const islandProgressInput = document.getElementById('island-expanded-progress');
+
+  const handleProgressInput = (e) => {
+    if (player.currentIndex >= 0) {
+      const track = player.playlist[player.currentIndex];
+      const pct = parseFloat(e.target.value) / 100;
+      const target = track.duration * pct;
+      updateProgressUI(target, track.duration);
+    }
+  };
+
+  const handleProgressChange = (e) => {
+    const pct = parseFloat(e.target.value) / 100;
+    if (player.sound) {
+      player.seek(pct);
+    } else if (player.currentIndex >= 0) {
+      const track = player.playlist[player.currentIndex];
+      const target = track.duration * pct;
+      player.pendingSeekTime = target;
+      savePlaybackState(track.id, target);
+    }
+  };
+
+  if (progressInput) {
+    progressInput.oninput = handleProgressInput;
+    progressInput.onchange = handleProgressChange;
+  }
+  if (islandProgressInput) {
+    islandProgressInput.oninput = handleProgressInput;
+    islandProgressInput.onchange = handleProgressChange;
+  }
+
+  // Dynamic Island Expansion & Modal Opening
+  const islandPill = document.getElementById('island-pill');
   const modal = document.getElementById('music-player-modal');
-  
+
+  if (islandPill) {
+    islandPill.addEventListener('click', (e) => {
+      // Prevent toggling if clicked on controls or slider
+      if (e.target.closest('.expanded-control-btn') || e.target.closest('.expanded-slider')) {
+        return;
+      }
+
+      // Check if clicking artwork or text
+      const isArtwork = e.target.classList.contains('island-art') || e.target.classList.contains('island-art-large');
+      const isText = e.target.id === 'island-hovered-title' || e.target.id === 'island-expanded-title' || e.target.classList.contains('island-title') || e.target.classList.contains('expanded-title');
+
+      if (islandPill.classList.contains('expanded')) {
+        // Expanded state: Clicking cover artwork or title opens the library modal
+        if (isArtwork || isText) {
+          if (modal) {
+            modal.style.display = 'block';
+          }
+          return;
+        }
+      } else {
+        // Collapsed/Hovered state: Clicking cover artwork plays/pauses
+        if (isArtwork) {
+          if (player.sound && player.sound.playing()) {
+            player.pause();
+          } else {
+            player.play();
+          }
+          return;
+        }
+      }
+
+      // Toggle expanded class
+      islandPill.classList.toggle('expanded');
+    });
+  }
+
+  // Click outside to collapse Dynamic Island
+  document.addEventListener('click', (e) => {
+    const islandContainer = document.getElementById('dynamic-island');
+    if (islandPill && islandContainer && !islandContainer.contains(e.target)) {
+      islandPill.classList.remove('expanded');
+    }
+  });
+
+  // Dynamic Island Controls
+  const islandPlayBtn = document.getElementById('island-expanded-play');
+  const islandPrevBtn = document.getElementById('island-expanded-prev');
+  const islandNextBtn = document.getElementById('island-expanded-next');
+
+  if (islandPlayBtn) {
+    islandPlayBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (player.sound && player.sound.playing()) {
+        player.pause();
+      } else {
+        player.play();
+      }
+    };
+  }
+  if (islandPrevBtn) {
+    islandPrevBtn.onclick = (e) => {
+      e.stopPropagation();
+      player.prev();
+    };
+  }
+  if (islandNextBtn) {
+    islandNextBtn.onclick = (e) => {
+      e.stopPropagation();
+      player.next();
+    };
+  }
+
+  // Library modal toggle
   // Clicking artwork or text details opens the library modal
   const miniArt = document.getElementById('music-mini-art');
   if (miniArt) {
@@ -797,6 +977,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Shuffle & Repeat buttons
   const shuffleBtn = document.getElementById('music-modal-shuffle');
+
   if (shuffleBtn) {
     shuffleBtn.onclick = () => {
       player.isShuffle = !player.isShuffle;

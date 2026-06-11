@@ -22,9 +22,89 @@
 
 <body>
 
+  <!--
   <div class="date-day-container">
     <p><span id="currentDay"></span> <span id="currentDate"></span></p>
   </div>
+  -->
+
+  <!-- Apple-Style Dynamic Island Music Player -->
+  <div class="dynamic-island-container" id="dynamic-island">
+    <div class="dynamic-island-pill" id="island-pill">
+      <!-- 1. Collapsed State Content -->
+      <div class="island-collapsed-content">
+        <img class="island-art" id="island-collapsed-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork" title="Click to open Library">
+        <span class="island-elapsed-time" id="island-collapsed-elapsed">0:00</span>
+        <div class="island-waveform" id="island-collapsed-waveform">
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+        </div>
+      </div>
+
+      <!-- 2. Hovered State Content -->
+      <div class="island-hovered-content">
+        <img class="island-art" id="island-hovered-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork" title="Click to open Library">
+        <div class="island-info">
+          <span class="island-title" id="island-hovered-title">No Track Selected</span>
+          <span class="island-artist" id="island-hovered-artist">Select a folder to start</span>
+        </div>
+        <div class="island-waveform" id="island-hovered-waveform">
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+        </div>
+      </div>
+
+      <!-- 3. Clicked/Expanded State Content -->
+      <div class="island-expanded-content">
+        <div class="expanded-top-row">
+          <img class="island-art-large" id="island-expanded-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork" title="Click to open Library">
+          <div class="expanded-info">
+            <span class="expanded-title" id="island-expanded-title">No Track Selected</span>
+            <span class="expanded-artist" id="island-expanded-artist">Select a folder to start</span>
+          </div>
+          <div class="expanded-waveform" id="island-expanded-waveform">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+        </div>
+        <div class="expanded-progress-row">
+          <span class="expanded-time-elapsed" id="island-expanded-elapsed">0:00</span>
+          <div class="slider-wrapper">
+            <input type="range" class="expanded-slider" id="island-expanded-progress" min="0" max="100" value="0" step="0.1">
+          </div>
+          <span class="expanded-time-remaining" id="island-expanded-remaining">0:00</span>
+        </div>
+        <div class="expanded-controls-row">
+          <!-- Spacer to balance the AirPlay button on the right -->
+          <div class="controls-spacer"></div>
+          
+          <div class="controls-center">
+            <button class="expanded-control-btn btn-prev" id="island-expanded-prev" title="Previous">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18V6l-8.5 6 8.5 6zm8.5 0V6L12 12l8.5 6z"/></svg>
+            </button>
+            <button class="expanded-control-btn btn-play" id="island-expanded-play" title="Play/Pause">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="expanded-control-btn btn-next" id="island-expanded-next" title="Next">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v12l8.5-6L12 6zM3.5 6v12L12 12 3.5 6z"/></svg>
+            </button>
+          </div>
+          
+          <button class="expanded-control-btn btn-output" id="island-expanded-output" title="Output Audio Source">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17l-5 5h10l-5-5z" /><path d="M12 2C7.03 2 3 6.03 3 11c0 1.66.45 3.22 1.24 4.57l1.47-1.47C5.23 13.16 5 12.11 5 11c0-3.87 3.13-7 7-7s7 3.13 7 7c0 1.11-.23 2.16-.71 3.1l1.47 1.47C20.55 14.22 21 12.66 21 11c0-4.97-4.03-9-9-9z" opacity="0.8" /><path d="M12 6c-2.76 0-5 2.24-5 5 0 .93.26 1.8.71 2.54l1.47-1.47c-.28-.48-.38-.96-.38-1.07 0-1.82 1.48-3.3 3.3-3.3s3.3 1.48 3.3 3.3c0 .35-.08.69-.18 1.07l1.47 1.47c.45-.74.71-1.61.71-2.54 0-2.76-2.24-5-5-5z" opacity="0.8" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <div class="container">
   <div class="time-container">
@@ -122,61 +202,7 @@
   </div>
 </div>
 
-<!-- Bottom Center Music Player -->
-<div class="bottom-music-player">
-  <!-- Top Row: Cover Art, Info, and Waves -->
-  <div class="music-top-row">
-    <div class="music-info-left">
-      <img id="music-mini-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork" title="Click to open Library">
-      <div class="music-text-details" title="Click to open Library">
-        <div id="music-mini-title">No Track Selected</div>
-        <div id="music-mini-artist">Select a folder to start</div>
-      </div>
-    </div>
-    
-    <!-- Smooth Apple-style waves indicator -->
-    <div class="music-wave" id="music-wave-indicator">
-      <span class="wave-bar"></span>
-      <span class="wave-bar"></span>
-      <span class="wave-bar"></span>
-      <span class="wave-bar"></span>
-      <span class="wave-bar"></span>
-    </div>
-  </div>
-  
-  <!-- Middle Row: Seek Slider and Times -->
-  <div class="music-middle-row">
-    <span id="music-mini-time-elapsed">0:00</span>
-    <div class="slider-wrapper">
-      <input type="range" id="music-mini-progress" min="0" max="100" value="0" step="0.1">
-    </div>
-    <span id="music-mini-time-remaining">0:00</span>
-  </div>
-  
-  <!-- Bottom Row: Star, Playback, and Output Device -->
-  <div class="music-bottom-row">
-    <button id="music-btn-star" class="music-action-btn" title="Add to Favorites">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    </button>
-    
-    <div class="music-playback-controls">
-      <button id="music-mini-prev" class="music-action-btn" title="Previous">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-      </button>
-      <button id="music-mini-play" class="music-action-btn play-btn" title="Play/Pause">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <button id="music-mini-next" class="music-action-btn" title="Next">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 6v12l8.5-6L13 6zm-.5 6L4 6v12l8.5-6z"/></svg>
-      </button>
-    </div>
-    
-    <button id="music-mini-output-device" class="music-action-btn" title="Output Audio Source">
-      <!-- Icon will be set dynamically via JS -->
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><circle cx="12" cy="14" r="4"/><line x1="12" y1="6" x2="12.01" y2="6"/></svg>
-    </button>
-  </div>
-</div>
+
 
 <!-- Music Player Library Modal -->
 <div id="music-player-modal" class="remove-bg-window">
