@@ -469,6 +469,44 @@ function updateActiveTrackUI(track) {
   renderLibraryUI();
 }
 
+function checkLibraryStatusAndToggleIsland() {
+  const island = document.getElementById('dynamic-island');
+  if (island) {
+    if (activeLibrary.length > 0) {
+      island.classList.add('active');
+      
+      // If no track is currently active, populate UI with first track details (don't play it)
+      if (player.currentIndex < 0) {
+        const firstTrack = activeLibrary[0];
+        
+        const collapsedArt = document.getElementById('island-collapsed-art');
+        const hoveredArt = document.getElementById('island-hovered-art');
+        const expandedArt = document.getElementById('island-expanded-art');
+        
+        const hoveredTitle = document.getElementById('island-hovered-title');
+        const hoveredArtist = document.getElementById('island-hovered-artist');
+        
+        const expandedTitle = document.getElementById('island-expanded-title');
+        const expandedArtist = document.getElementById('island-expanded-artist');
+
+        if (collapsedArt) collapsedArt.src = firstTrack.artwork;
+        if (hoveredArt) hoveredArt.src = firstTrack.artwork;
+        if (expandedArt) expandedArt.src = firstTrack.artwork;
+
+        if (hoveredTitle) hoveredTitle.textContent = firstTrack.title;
+        if (hoveredArtist) hoveredArtist.textContent = firstTrack.artist;
+
+        if (expandedTitle) expandedTitle.textContent = firstTrack.title;
+        if (expandedArtist) expandedArtist.textContent = firstTrack.artist;
+        
+        updateProgressUI(0, firstTrack.duration);
+      }
+    } else {
+      island.classList.remove('active');
+    }
+  }
+}
+
 // Sync play/pause buttons and waveform animation
 function updatePlayStateUI(isPlaying) {
   const miniPlay = document.getElementById('music-mini-play');
@@ -622,6 +660,7 @@ async function handleFolderSelection() {
     player.setPlaylist(activeLibrary);
     await saveTracks(activeLibrary);
     renderLibraryUI();
+    checkLibraryStatusAndToggleIsland();
 
     if (statusEl) statusEl.textContent = `Loaded ${activeLibrary.length} tracks.`;
   } catch (err) {
@@ -681,6 +720,7 @@ async function handleFolderRescan() {
     player.setPlaylist(activeLibrary);
     await saveTracks(activeLibrary);
     renderLibraryUI();
+    checkLibraryStatusAndToggleIsland();
 
     if (statusEl) statusEl.textContent = `Library updated. Total tracks: ${activeLibrary.length}.`;
   } catch (err) {
@@ -793,7 +833,11 @@ async function init() {
         
         // Store pending seek offset
         player.pendingSeekTime = lastPlayed.seekTime;
+      } else {
+        checkLibraryStatusAndToggleIsland();
       }
+    } else {
+      checkLibraryStatusAndToggleIsland();
     }
 
     const statusEl = document.getElementById('music-modal-status');
@@ -948,6 +992,14 @@ document.addEventListener('DOMContentLoaded', () => {
     islandNextBtn.onclick = (e) => {
       e.stopPropagation();
       player.next();
+    };
+  }
+
+  // Library modal toggle
+  const musicLibraryBtn = document.getElementById('musicLibraryButton');
+  if (musicLibraryBtn) {
+    musicLibraryBtn.onclick = () => {
+      modal.style.display = 'block';
     };
   }
 

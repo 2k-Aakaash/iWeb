@@ -1103,7 +1103,7 @@ input[type="checkbox"]:checked + label > span:before {
     left: 10px;
     position: fixed;
     width: 150px;
-    height: 190px;
+    height: 230px;
     overflow-y: auto;
     scrollbar-width: none; /* Hide the scrollbar on Firefox */
   } 
@@ -1229,11 +1229,37 @@ input[type="checkbox"]:checked + label > span:before {
     backdrop-filter: blur( 24px );
     -webkit-backdrop-filter: blur( 24px );
     border: 1px solid rgba( 255, 255, 255, 0.18 );
-    top: 180px;
+    top: 220px;
     left: 10px;
     position: fixed;
     width: 120px;
     height: 100px;
+  }
+
+  .music-library-button {
+    background: rgba( 255, 255, 255, 0.2 );
+    backdrop-filter: blur( 7px );
+    -webkit-backdrop-filter: blur( 7px );
+    border-radius: 10px;
+    border: none;
+    height: 30px;
+    width: 120px;
+    font-size: 15px;
+    font-family: 'SFRounded-Semibold';
+    color: #ffffff;
+    transition: transform 0.1s ease-in;
+    position: fixed;
+    left: 0;
+    margin-left: 10px;
+    top: 160px;
+  }
+
+  .music-library-button:hover {
+    transform: scale(0.96);
+  }
+
+  .music-library-button:active {
+    transform: scale(0.90);
   }
   
   .font-option {
