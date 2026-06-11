@@ -207,26 +207,239 @@
 
 <!-- Music Player Library Modal -->
 <div id="music-player-modal" class="remove-bg-window">
-  <div class="remove-bg-content">
-    <div class="navbar">
-      <p class="navbar-text">Music Library 🎵</p>
-      <div style="display: flex; gap: 10px;">
-        <button id="music-modal-select-folder" class="close-button" style="width: auto; padding: 0 15px;">Select Folder</button>
-        <button id="music-modal-rescan" class="close-button" style="width: auto; padding: 0 15px; display: none;">Rescan</button>
-        <button id="music-modal-shuffle" class="close-button" style="width: auto; padding: 0 15px;">Shuffle: Off</button>
-        <button id="music-modal-repeat" class="close-button" style="width: auto; padding: 0 15px;">Repeat: Off</button>
+  <div class="remove-bg-content music-overhaul-modal">
+    <!-- macOS dots -->
+    <div class="window-controls">
+      <span class="window-dot dot-close" id="sidebar-dot-close"></span>
+      <span class="window-dot dot-minimize"></span>
+      <span class="window-dot dot-maximize"></span>
+    </div>
+    <!-- Close button for overlay -->
+    <button id="close-music-player-modal" class="close-button overhaul-close-btn">×</button>
+    
+    <div class="music-app-layout">
+      <!-- Left Sidebar -->
+      <aside class="music-sidebar">
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+          <div class="nav-item active" id="nav-home">
+            <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Home</span>
+          </div>
+          <div class="nav-item" id="nav-search">
+            <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Search</span>
+          </div>
+        </nav>
+        
+        <!-- Library Section -->
+        <div class="sidebar-section">
+          <div class="section-header">
+            <span>Your Library</span>
+            <div class="section-actions">
+              <button class="section-btn" id="playlist-create-btn" title="Create Playlist">+</button>
+            </div>
+          </div>
+          
+          <ul class="sidebar-playlist-list" id="sidebar-playlists">
+            <!-- Playlists like Favorites, custom playlists will go here -->
+            <li class="playlist-item" id="playlist-favorites" data-id="favorites">
+              <span class="playlist-color-box fav-box">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </span>
+              <div class="playlist-info">
+                <span class="playlist-name">Favorites</span>
+                <span class="playlist-desc">Playlist • You</span>
+              </div>
+            </li>
+            <!-- Custom playlists will be appended here dynamically -->
+          </ul>
+        </div>
+      </aside>
+      
+      <!-- Main Content Area -->
+      <main class="music-main-content">
+        <!-- Top Navbar -->
+        <header class="main-header">
+          <div class="header-navigation">
+            <button class="nav-arrow" id="nav-arrow-back" title="Go back">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="nav-arrow" id="nav-arrow-forward" title="Go forward">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+            <span class="header-title" id="current-view-title">Home</span>
+          </div>
+          
+          <!-- Folder load options -->
+          <div class="header-folder-actions">
+            <button id="music-modal-select-folder" class="header-action-btn">Select Folder</button>
+            <button id="music-modal-rescan" class="header-action-btn" style="display: none;">Rescan</button>
+            <span id="music-modal-status" class="header-status-text">No folder selected.</span>
+          </div>
+        </header>
+        
+        <!-- Dynamic Views -->
+        <div class="music-views-container">
+          
+          <!-- 1. Home View -->
+          <div class="music-view active" id="view-home">
+            <h2 class="view-section-title">Library Overview</h2>
+            <div class="home-grid">
+              <div class="home-card" id="card-all-songs">
+                <div class="card-artwork-placeholder gradient-all">
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <h3>All Songs</h3>
+                <p>Everything in your library</p>
+              </div>
+              <div class="home-card" id="card-favorites">
+                <div class="card-artwork-placeholder gradient-fav">
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+                <h3>Favorites</h3>
+                <p>Songs you marked as favorite</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 2. Search View -->
+          <div class="music-view" id="view-search">
+            <div class="search-input-wrapper">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="music-search-field" placeholder="Search for songs, artists, or albums...">
+            </div>
+            <div class="search-results-section">
+              <h2 class="view-section-title" id="search-results-header">Start searching</h2>
+              <div class="music-track-list search-results-list">
+                <!-- Filtered tracks go here -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- 3. Playlist / Album View -->
+          <div class="music-view" id="view-playlist">
+            <!-- Playlist Info Header -->
+            <div class="playlist-header-block">
+              <img class="playlist-cover-art" id="playlist-view-cover" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Album Cover">
+              <div class="playlist-metadata-details">
+                <span class="playlist-category" id="playlist-view-category">Album</span>
+                <h1 class="playlist-title-large" id="playlist-view-title">SOS</h1>
+                <div class="playlist-creator-row">
+                  <span class="playlist-creator-name" id="playlist-view-artist">SZA</span>
+                  <span class="bullet-sep">•</span>
+                  <span class="playlist-release-year" id="playlist-view-year">2023</span>
+                </div>
+                <div class="playlist-stats" id="playlist-view-stats">0 songs</div>
+                
+                <p class="playlist-description" id="playlist-view-desc">
+                  Explore and play your library tracks.
+                </p>
+                
+                <div class="playlist-actions-row">
+                  <button class="playlist-pill-btn btn-play-all" id="playlist-play-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <span>Play</span>
+                  </button>
+                  <button class="playlist-pill-btn btn-shuffle-all" id="playlist-shuffle-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.54 5.46 20 18 7.46l2.04 2.04V4h-5.54zm.35 11.06l-1.41 1.41L18 20l5.54-5.54-1.41-1.41-4.13 4.13-3.14-3.12z"/></svg>
+                    <span>Shuffle</span>
+                  </button>
+                  <button class="playlist-circle-btn btn-fav-playlist" id="playlist-fav-btn" title="Add to Favorites">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  </button>
+                  <button class="playlist-circle-btn btn-more-playlist" id="playlist-more-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tracks Table -->
+            <div class="tracks-table-container">
+              <table class="tracks-table">
+                <thead>
+                  <tr>
+                    <th class="col-index">#</th>
+                    <th class="col-title">Title</th>
+                    <th class="col-album">Album</th>
+                    <th class="col-actions"></th>
+                    <th class="col-duration">Time</th>
+                  </tr>
+                </thead>
+                <tbody class="music-track-list" id="playlist-tracks-body">
+                  <!-- Playlist tracks injected here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </main>
+    </div>
+    
+    <!-- Bottom Playback Control Bar -->
+    <footer class="music-bottom-bar">
+      <!-- Left: Active Track details -->
+      <div class="bottom-active-track">
+        <img class="bottom-track-art" id="bottom-bar-art" src="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" alt="Artwork">
+        <div class="bottom-track-info">
+          <span class="bottom-track-title" id="bottom-bar-title">No Track Selected</span>
+          <span class="bottom-track-artist" id="bottom-bar-artist">Select a folder to start</span>
+        </div>
       </div>
-      <button id="close-music-player-modal" class="close-button">×</button>
+      
+      <!-- Center: Controls & Seek Slider -->
+      <div class="bottom-playback-center">
+        <div class="bottom-controls-row">
+          <button class="bottom-control-btn" id="bottom-bar-shuffle" title="Shuffle">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.54 5.46 20 18 7.46l2.04 2.04V4h-5.54zm.35 11.06l-1.41 1.41L18 20l5.54-5.54-1.41-1.41-4.13 4.13-3.14-3.12z"/></svg>
+          </button>
+          <button class="bottom-control-btn" id="bottom-bar-prev" title="Previous">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="bottom-control-btn play-pause-btn" id="bottom-bar-play" title="Play/Pause">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" class="play-svg"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="bottom-control-btn" id="bottom-bar-next" title="Next">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6z"/></svg>
+          </button>
+          <button class="bottom-control-btn" id="bottom-bar-repeat" title="Repeat">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+          </button>
+        </div>
+        
+        <div class="bottom-seek-row">
+          <span class="seek-time elapsed-time" id="bottom-bar-elapsed">0:00</span>
+          <div class="seek-slider-wrapper">
+            <input type="range" class="seek-slider" id="bottom-bar-progress" min="0" max="100" value="0" step="0.1">
+          </div>
+          <span class="seek-time total-time" id="bottom-bar-duration">0:00</span>
+        </div>
+      </div>
+      
+      <!-- Right: Extras & Volume -->
+      <div class="bottom-playback-right">
+        <button class="bottom-control-btn" id="bottom-bar-queue" title="Queue / List View">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        </button>
+        <div class="volume-control-wrapper">
+          <button class="bottom-control-btn volume-btn" id="bottom-bar-volume-btn" title="Mute/Unmute">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </button>
+          <input type="range" class="volume-slider" id="bottom-bar-volume" min="0" max="100" value="80" step="1">
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Custom Playlist Popup / Action Context Menu (hidden by default) -->
+    <div id="playlist-context-menu" class="music-context-menu hidden">
+      <div class="context-header">Add to Playlist</div>
+      <div class="context-list" id="context-playlists-list">
+        <!-- Playlists list will go here -->
+      </div>
     </div>
 
-    <div class="music-modal-body" style="padding: 15px; color: white;">
-      <div id="music-modal-status" style="margin-bottom: 15px; font-family: 'SFRounded-Semibold'; color: rgba(255,255,255,0.7);">
-        No folder selected.
-      </div>
-      <div class="music-track-list" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
-        <!-- Track rows will be inserted here dynamically -->
-      </div>
-    </div>
   </div>
 </div>
 
