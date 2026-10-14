@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/manifest-pwa.json" />
+    <link 
+      rel="icon" 
+      href="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" 
+      type="image/svg+xml" 
+    />
+    <title>iWeb</title>
+    <script type="module" crossorigin src="/assets/index-rivHkBv1.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DuFO7Zar.css">
+  </head>
+  <body>
+    <!-- SVG displacement filter for liquid glass effect - must be here before CSS references it -->
+    <svg id="svg-filters" width="0" height="0" style="position:absolute;overflow:hidden;">
+      <defs>
+        <!--
+          EXTENSION-SAFE LIQUID GLASS DISPLACEMENT FILTER
+          ─────────────────────────────────────────────────
+          Old feColorMatrix(saturate=8) REMOVED.
+          Root cause: Chrome extension newtab composites SVG filter intermediate
+          named results differently from a normal tab. The saturated coloredNoise
+          step was rendered as vivid purple/red blobs on screen.
+
+          Replacement: feComponentTransfer with a linear contrast curve applied to
+          R and G channels only. This pushes displacement channel values toward
+          extremes (0 or 1) WITHOUT creating saturated color artifacts:
+            • slope=2.5 / intercept=-0.75 → high-contrast signal, zero color shift
+            • Organic baseFrequency (0.018 0.025) restored for wavy edge shapes
+            • numOctaves=4 for rich multi-scale turbulence texture
+            • scale=40 (feComponentTransfer produces stronger signal than raw noise,
+              so a slightly lower scale yields the same visual magnitude as old scale=42)
+        -->
+        <filter id="displacementFilter" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.018 0.025"
+            numOctaves="4"
+            seed="5"
+            result="noise"
+          />
+          <!-- Amplify displacement channels without color saturation (extension-safe) -->
+          <feComponentTransfer in="noise" result="amplifiedNoise">
+            <feFuncR type="linear" slope="2.5" intercept="-0.75"/>
+            <feFuncG type="linear" slope="2.5" intercept="-0.75"/>
+          </feComponentTransfer>
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="amplifiedNoise"
+            scale="40"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator && !window.chrome?.runtime?.id) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/pwa-service-worker.js')
+            .then(reg => console.log('PWA Service Worker registered:', reg))
+            .catch(err => console.error('Service Worker registration failed:', err));
+        });
+      }
+    </script>
+  </body>
+</html>

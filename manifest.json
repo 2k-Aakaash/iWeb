@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "iWeb React",
+  "version": "1.0.0",
+  "description": "iWeb: Individualized Web Interface - React Edition.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://api.met.no/*",
+    "https://nominatim.openstreetmap.org/*",
+    "https://ipapi.co/*",
+    "https://api.unsplash.com/*",
+    "https://images.unsplash.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  }
+}

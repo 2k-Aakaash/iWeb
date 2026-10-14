@@ -1,0 +1,8 @@
+{
+    "name": "iWeb - Individualized Web Interface",
+    "short_name": "iWeb",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#317EFB"
+}
