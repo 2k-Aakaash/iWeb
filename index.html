@@ -5,15 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest-pwa.json" />
+    <!-- The UI fonts and Dock icons come from ImageKit: open that connection straight away. -->
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin />
     <link 
       rel="icon" 
       href="https://ik.imagekit.io/026k2i7ys/iWeb%20Favicon.svg?updatedAt=1700227200100" 
       type="image/svg+xml" 
     />
     <title>iWeb</title>
-    <script type="module" crossorigin src="/assets/index-D8EuVNwJ.js"></script>
+    <!-- The start-up veil (src/libs/boot/bootReveal.js): styled here so it covers the very first
+         frame, before any CSS or script loads. The whole reveal takes about 0.3 s. -->
+    <style>
+      #boot-veil {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483600;
+        pointer-events: none;
+        background: rgba(16, 16, 18, 0.62);
+        -webkit-backdrop-filter: blur(36px) saturate(1.3);
+        backdrop-filter: blur(36px) saturate(1.3);
+        transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      #boot-veil.is-gone { opacity: 0; }
+      @media (prefers-reduced-motion: reduce) {
+        #boot-veil { transition-duration: 0.1s; }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-jfzLnefB.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/chunk-CMxvf4Kt.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-w3l7RkYx.css">
+    <link rel="modulepreload" crossorigin href="/assets/react-CiG4YQQ8.js">
+    <link rel="modulepreload" crossorigin href="/assets/db-BNXDg2fA.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CW-qjlto.css">
   </head>
   <body>
     <!-- SVG displacement filter for liquid glass effect - must be here before CSS references it -->
@@ -59,6 +81,7 @@
         </filter>
       </defs>
     </svg>
+    <div id="boot-veil" aria-hidden="true"></div>
     <div id="root"></div>
   </body>
 </html>
