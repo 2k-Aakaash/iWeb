@@ -1,14 +1,15 @@
 {
   "manifest_version": 3,
   "name": "iWeb React",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "iWeb: Individualized Web Interface - React Edition.",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "identity"
   ],
   "host_permissions": [
     "https://api.met.no/*",
@@ -26,5 +27,5 @@
   "background": {
     "service_worker": "service-worker.js"
   },
-  "version_name": "v2.9"
+  "version_name": "v2.10"
 }
