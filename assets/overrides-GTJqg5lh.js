@@ -1,0 +1,1 @@
+import{o as e}from"./chunk-CMxvf4Kt.js";import{t}from"./react-CiG4YQQ8.js";var n=e(t(),1);function r(){let e=Object.freeze({}),t=new Set,r=e=>(t.add(e),()=>t.delete(e));return{get:t=>e[t],all:()=>e,set(n){e=Object.freeze({...n||{}});for(let e of[...t])e()},subscribe:r,use:()=>(0,n.useSyncExternalStore)(r,()=>e,()=>e)}}export{r as t};
