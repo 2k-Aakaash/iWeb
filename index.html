@@ -31,56 +31,13 @@
         #boot-veil { transition-duration: 0.1s; }
       }
     </style>
-    <script type="module" crossorigin src="/assets/index-CNVASeoQ.js"></script>
+    <script type="module" crossorigin src="/assets/index-B_zGfHM_.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/chunk-CMxvf4Kt.js">
     <link rel="modulepreload" crossorigin href="/assets/react-CiG4YQQ8.js">
     <link rel="modulepreload" crossorigin href="/assets/jsx-runtime-CcLEtJfF.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DcglSxyh.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-Cpa06Jd9.css">
   </head>
   <body>
-    <!-- SVG displacement filter for liquid glass effect - must be here before CSS references it -->
-    <svg id="svg-filters" width="0" height="0" style="position:absolute;overflow:hidden;">
-      <defs>
-        <!--
-          EXTENSION-SAFE LIQUID GLASS DISPLACEMENT FILTER
-          ─────────────────────────────────────────────────
-          Old feColorMatrix(saturate=8) REMOVED.
-          Root cause: Chrome extension newtab composites SVG filter intermediate
-          named results differently from a normal tab. The saturated coloredNoise
-          step was rendered as vivid purple/red blobs on screen.
-
-          Replacement: feComponentTransfer with a linear contrast curve applied to
-          R and G channels only. This pushes displacement channel values toward
-          extremes (0 or 1) WITHOUT creating saturated color artifacts:
-            • slope=2.5 / intercept=-0.75 → high-contrast signal, zero color shift
-            • Organic baseFrequency (0.018 0.025) restored for wavy edge shapes
-            • numOctaves=4 for rich multi-scale turbulence texture
-            • scale=40 (feComponentTransfer produces stronger signal than raw noise,
-              so a slightly lower scale yields the same visual magnitude as old scale=42)
-        -->
-        <filter id="displacementFilter" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.018 0.025"
-            numOctaves="4"
-            seed="5"
-            result="noise"
-          />
-          <!-- Amplify displacement channels without color saturation (extension-safe) -->
-          <feComponentTransfer in="noise" result="amplifiedNoise">
-            <feFuncR type="linear" slope="2.5" intercept="-0.75"/>
-            <feFuncG type="linear" slope="2.5" intercept="-0.75"/>
-          </feComponentTransfer>
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="amplifiedNoise"
-            scale="40"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </defs>
-    </svg>
     <div id="boot-veil" aria-hidden="true"></div>
     <div id="root"></div>
   </body>
